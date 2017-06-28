@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { c, core } from '../../src/index';
+import { c } from '../../src/index';
+
+import Buttons from './Buttons';
+import Modals from './Modals';
+import Inputs from './Inputs';
 
 export default class App extends React.Component {
 
@@ -24,27 +28,10 @@ export default class App extends React.Component {
             </c.Dropdown>
           </ul>
         </c.Navbar>
-        <c.Panel title="Buttons" brand="primary">
-          <h3>Buttons</h3>
-          <div className="btn-group">
-            <c.Button label="Default" />
-            <c.Button label="Primary" brand="primary"/>
-            <c.Button label="Success" brand="success"/>
-            <c.Button label="Info" brand="info"/>
-            <c.Button label="Warning" brand="warning"/>
-            <c.Button label="Danger" brand="danger"/>
-          </div>
-          <h3>Modals</h3>
-          <div>
-            <c.Button label="Message Modal"
-                      brand="primary"
-                      onClick={() => core.alert.message("This is a message") }
-            /> {" "}
-            <c.Button label="Confirm Modal"
-                      brand="primary"
-                      onClick={() => core.alert.confirm("Are you sure?", ()=> console.log("yes") ) }
-            />
-          </div>
+        <c.Panel title="Dashboard" brand="primary">
+          <Buttons />
+          <Modals />
+          <Inputs />
         </c.Panel>
       </div>
     );

@@ -26,12 +26,12 @@ export default class Modal extends React.Component {
     let icon = this.props.icon ? <Icon name={this.props.icon} /> : null;
 
     return (
-      <div className="modal" tabIndex="-1" role="dialog" ref={(element) => this.element = element }>
+      <div className={"modal "+this.props.className} tabIndex="-1" role="dialog" ref={(element) => this.element = element }>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              { icon } <h4 className="modal-title">{ this.props.title }</h4>
+              <h4 className="modal-title">{ icon } { this.props.title }</h4>
             </div>
             <div className="modal-body clearfix">
                { this.getBodyChildren() }
@@ -100,7 +100,7 @@ export default class Modal extends React.Component {
 
           }, 0);
 
-          jqElement.appendTo('body');
+          //jqElement.appendTo('body');
 
         }
 

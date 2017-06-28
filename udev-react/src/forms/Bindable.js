@@ -35,7 +35,7 @@ export default class Bindable extends React.Component {
        let secondaryPath = paths[1];
 
        if (this.props.parentBinder) {
-         binder = Binder.default.bindTo(this.props.parentBinder,basePath, secondaryPath);
+         binder = Binder.bindTo(this.props.parentBinder,basePath, secondaryPath);
        } else {
 
         //  if (!this.props.stateHolder.state[basePath]) {
@@ -46,7 +46,7 @@ export default class Bindable extends React.Component {
         //     this.props.stateHolder.state[basePath][secondaryPath] = this.getInitialValue();
         //  }
 
-         binder = Binder.default.bindToState(stateHolder,basePath,secondaryPath);
+         binder = Binder.bindToState(stateHolder,basePath,secondaryPath);
        }
 
     }

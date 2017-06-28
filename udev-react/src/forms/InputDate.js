@@ -7,6 +7,8 @@ import InputGroupAddon from './InputGroupAddon';
 import InputText from './InputText';
 import Icon from '../commons/Icon';
 
+import '!style-loader!css-loader!bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
+
 export default class InputDate extends Bindable {
 
   constructor(props) {
