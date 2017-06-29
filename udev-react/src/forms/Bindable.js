@@ -68,11 +68,17 @@ export default class Bindable extends React.Component {
   }
 
   setValue(value) {
-     this.binder.value = value;
+
+    if (this.hasModel()) {
+      this.binder.value = value;
+    } else {
+      this.value = value;
+    }
+
   }
 
   getValue() {
-     return this.binder.value
+     return this.hasModel() ? this.binder.value : this.value;
   }
 
   getInitialValue() {

@@ -7,26 +7,19 @@ import InputGroupAddon from './InputGroupAddon';
 import InputText from './InputText';
 import Icon from '../commons/Icon';
 
-import '!style-loader!css-loader!bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
+//import '!style-loader!css-loader!bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css';
 
 export default class InputDate extends Bindable {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-       wrapper: {
-         formattedDate: ""
-       }
-    }
   }
 
   render() {
+
     return (
         <div className="input-group date" ref={(input) => this.input = input}>
-           <InputText stateHolder={this}
-              model="wrapper.formattedDate"
-           />
+           <InputText />
           <InputGroupAddon>
             <Icon name="fa fa-calendar" />
           </InputGroupAddon>
@@ -42,13 +35,13 @@ export default class InputDate extends Bindable {
           orientation: "bottom auto",
           todayHighlight: true
       }).on('changeDate',(evt) => {
-          this.binder.value = evt.date;
+          this.setValue(evt.date);
       }).on('clearDate',(evt) => {
-          this.binder.value = this.getInitialValue();
+          this.setValue(this.getInitialValue());
       });
 
+      $(this.input).datepicker('setDate',this.getValue());
 
   }
-
 
 }

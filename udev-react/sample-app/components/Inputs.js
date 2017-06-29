@@ -23,7 +23,7 @@ export default class Inputs extends React.Component {
         <h3>Inputs</h3>
 
         <div>
-          <f.Form>
+          <f.Form onSubmit={this.printForm.bind(this)}>
             <c.DivRow>
               <c.DivCol width="6">
                 <f.FormGroup label="Input Text">
@@ -36,10 +36,22 @@ export default class Inputs extends React.Component {
                 </f.FormGroup>
               </c.DivCol>
             </c.DivRow>
+            <c.DivRow>
+              <c.DivCol>
+                <c.Well size="sm">
+                  <f.SubmitButton label="Submit" brand="primary" />
+                </c.Well>
+              </c.DivCol>
+            </c.DivRow>
+
           </f.Form>
         </div>
       </div>
     );
+  }
+
+  printForm() {
+    console.log(this.state.data);
   }
 
 }
