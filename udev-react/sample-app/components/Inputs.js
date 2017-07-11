@@ -11,7 +11,8 @@ export default class Inputs extends React.Component {
       data: {
         text:"this is a text",
         number:23,
-        date: new Date()
+        date: new Date(),
+        option:"RED"
       }
     };
 
@@ -33,6 +34,18 @@ export default class Inputs extends React.Component {
               <c.DivCol width="6">
                 <f.FormGroup label="Input Date">
                   <f.InputDate stateHolder={this} model="data.date" />
+                </f.FormGroup>
+              </c.DivCol>
+            </c.DivRow>
+            <c.DivRow>
+              <c.DivCol width="6">
+                <f.FormGroup label="Input Select">
+                  <f.InputSelect stateHolder={this} model="data.option" options={["BLUE","GREEN","RED"]} />
+                </f.FormGroup>
+              </c.DivCol>
+              <c.DivCol width="6">
+                <f.FormGroup label="Input Select">
+                  <f.InputSelect stateHolder={this} model="data.option" options={["BLUE","GREEN","RED"]} />
                 </f.FormGroup>
               </c.DivCol>
             </c.DivRow>

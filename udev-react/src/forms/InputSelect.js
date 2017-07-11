@@ -14,6 +14,7 @@ export default class InputSelect extends Bindable {
     return (
       <select className={"form-control input-"+this.props.size+" "+this.props.className}
           onChange={this.handleChange}
+          value={this.getValue()}
       >
         {options}
       </select>
