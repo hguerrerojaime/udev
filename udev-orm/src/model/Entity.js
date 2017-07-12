@@ -1,58 +1,51 @@
 import model from 'node-model';
 
+import Validateable from './Validateable';
+
 export default function Entity(options = {}) {
 
-  function enhanceEntity(target) {
+  const BASE_FINDERS = ['findBy','findAllBy','countBy'];
 
-    generateModel(target);
-    injectAttributes(target);
+  function enhance(target) {
+    let modelConstructor = Validateable()(target);
+
+    injectId(target);
+    injectFinders(target);
+
+    return modelConstructor;
   }
 
-  function generateModel(target) {
-    let entityModel = model(target.name);
+  function injectId(target) {
+    target.meta.model.attr('id');
+    
+    Object.defineProperty(target.prototype, "id", {
+      set: function(value) { this.attributes.id(value); },
+      get: function() { return this.attributes.id(); }
+    });
+  }
 
-    for (let key in target.attrs) {
-      let value = target.attrs[key];
-      let opts = typeof value === "string" ? { type:value } : value;
+  function injectFinders(target) {
 
-      if (opts.type == "any") {
-        delete opts.type;
+    target.get = function(id) {
+      console.log("getting "+target.name+" with id="+id);
+    };
+
+    for (let attr in target.attrs) {
+
+      for (let finder of BASE_FINDERS) {
+        let finderName = finder+attr.capitalize();
+
+        target[finderName] = function(value) {
+            console.log(target.name+" "+finderName+"="+value);
+        };
       }
 
-      entityModel = entityModel.attr(key,opts);
     }
-
-    target._entity.model = entityModel;
-
-  }
-
-  function injectAttributes(target) {
-
-
-    for (let key in target.attrs) {
-      Object.defineProperty(target, key, {
-        set: property.setter, get: property.getter
-      });
-    }
-
-    console.log(target.prototype);
 
   }
 
   return function decorator(target) {
-    let opts = Object.assign({},{
-      name: target.name
-    },options);
-
-    if (!target.attrs) {
-      target.attrs = {};
-    }
-
-    target._entity = {
-      name: opts.name,
-      options: opts
-    };
-
-    enhanceEntity(target);
+    return enhance(target);
   }
+
 }

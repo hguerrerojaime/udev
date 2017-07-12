@@ -1,27 +1,29 @@
 import assert from 'assert';
 
-import { model as m } from '../../src/index';
+import { Entity } from '../../src/index';
 
 describe('Entity', function() {
-  describe('annotating a class with Entity', function() {
+  describe('annotating a class with @Entity', function() {
 
-    @m.Entity()
-    class Book {
+    @Entity()
+    class Post {
 
        static attrs = {
-          'name': 'any',
-          'author': 'string',
-          'body': { type:'string',required:true }
+          title : 'string',
+          author : 'string',
+          body : 'string'
        };
 
     }
 
-    it('should have a property name same as class but uncapitalized', function() {
-       let book = new Book();
-       book.name = "beto";
-       console.log(book.name);
-
-       assert.equal("Book", Book._entity.name);
+    it ('should have an id',function(){
+      assert.ok(Object.keys(Post.meta.model.attrs).includes("id"));
     });
+
+    it ('should have attribute finders',function(){
+
+    });
+
+
   });
 });
