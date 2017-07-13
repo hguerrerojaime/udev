@@ -55,6 +55,8 @@ export default function Entity(options = {}) {
       documentName: target.name.uncapitalize()
     },options);
 
+    target
+
     return enhance(target);
   }
 

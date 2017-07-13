@@ -5,14 +5,6 @@ class EntityManager {
     this.persistenceContext = persistenceContext;
   }
 
-  get entities() {
-    return this.entities;
-  }
-
-  get dataSource() {
-    return this.dataSource;
-  }
-
 
 
 }
