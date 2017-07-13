@@ -55,7 +55,8 @@ export default function Model(target) {
   return function decorator(target) {
 
     target.meta = {
-      name: target.name
+      name: target.name,
+      annotations: { Model: Model }
     }
 
     return enhance(target);

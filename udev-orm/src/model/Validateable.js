@@ -8,6 +8,8 @@ export default function Validateable(target) {
 
     let modelConstructor = Model()(target);
 
+    target.meta.annotations.Validateable = Validateable;
+
     injectValidators(target);
     return modelConstructor;
   }
