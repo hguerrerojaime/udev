@@ -1,14 +1,9 @@
 import assert from 'assert';
 
-import mongodb from 'mongo-mock';
-import { MongoClient } from 'mongo-mock';
+import { MongoClient } from 'mongodb';
+import { DataSource,Collection } from '../../src/index';
 
-import { DataSource } from '../../src/index';
-
-mongodb.max_delay = 0;
-MongoClient.persist="mongo.js";
-
-describe('DataSource', function() {
+describe('Collection', function() {
   describe('creating a mongodb implementation', function() {
 
     class MongoDataSource extends DataSource {
@@ -27,17 +22,32 @@ describe('DataSource', function() {
              }
 
              fullfill(db);
+             db.close();
           });
         });
       }
 
     }
 
-    let dataSource = new MongoDataSource({url:"mongodb://localhost:27017/test"})
+    class MongoCollection extends Collection {
 
-    it ('should be able to connect to the database',function(){
+      constructor(name) {
+        super(name);
+      }
+
+      compile(db) {
+        return db.collection(this.name);
+      }
+
+    }
+
+    let dataSource = new MongoDataSource({url:"mongodb://localhost:27017/test"})
+    let collection = new MongoCollection("users");
+
+    it ('should be able to retrieve collection',function(){
        dataSource.connect().then((db) => {
-          console.log("connected");
+         let col = collection.compile(db);
+         console.log(col.find({}).toArray());
        });
     });
 

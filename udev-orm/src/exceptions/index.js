@@ -1,1 +1,0 @@
-export EntityException from './EntityException';
