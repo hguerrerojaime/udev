@@ -1,7 +1,6 @@
 export default class Expression {
 
-  constructor() {
-    
+  compile(db) {
+    throw new TypeError("Not yet implemented");
   }
-
 }

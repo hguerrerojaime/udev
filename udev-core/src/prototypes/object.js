@@ -3,7 +3,7 @@ Object.merge = (...objects) => {
 };
 
 Object.getVal = function(o,s) {
-    if (o == null) return; 
+    if (!o) return; 
 
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
