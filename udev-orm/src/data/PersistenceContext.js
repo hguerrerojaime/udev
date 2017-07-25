@@ -8,16 +8,23 @@ export default class PersistenceContext {
     return this._entities;
   }
 
-  registerEntity(entity) {
-    let annotations = Object.getVal(entity,"meta.annotations");
-    if (!annotations || !annotations.includes(Entity)) {
+  registerEntity(clazz) {
+    let annotations = Object.getVal(clazz,"meta.annotations");
+
+    if (!annotations || !annotations.Entity) {
       throw "Not an Entity";
     }
-    this.entities.push(entity);
+    this.entities.push(clazz);
   }
 
-  hasEntity(entity) {
-    return this.entities.includes(entity);
+  hasEntity(clazz) {
+    return this.entities.includes(clazz);
+  }
+
+  getCollectionName(clazz) {
+    if (this.hasEntity(clazz)) {
+      return clazz.entity.collectionName;
+    }
   }
 
 }

@@ -7,7 +7,7 @@ export default function Model(target,annotation = Model) {
   function enhance(target) {
     decorate(target,annotation);
     generateModel(target);
-    injectAttributes(target);
+    injectmodel(target);
     return enhanceConstructor(target);
   }
 
@@ -25,22 +25,26 @@ export default function Model(target,annotation = Model) {
       entityModel.attr(key,opts);
     }
 
+    target.prototype.json = function() {
+      return this.model.toJSON();
+    };
+
     target.meta.model = entityModel;
 
   }
 
-  function injectAttributes(target) {
+  function injectmodel(target) {
 
     for (let key in target.attrs) {
       Object.defineProperty(target.prototype, key, {
-        set: function(value) { this.attributes[key](value); },
-        get: function() { return this.attributes[key](); }
+        set: function(value) { this.model[key](value); },
+        get: function() { return this.model[key](); }
       });
     }
 
     Object.defineProperty(target.prototype,"errors", {
       set: function(value) { throw "this is a read only attribute" },
-      get: function() { return this.attributes.attrErrors }
+      get: function() { return this.model.attrErrors }
     });
 
   }
@@ -49,8 +53,8 @@ export default function Model(target,annotation = Model) {
       return class extends target {
           constructor(attrs = {}) {
               super();
-              this.attributes = new target.meta.model(attrs);
-              this.attributes.isValid();
+              this.model = new target.meta.model(attrs);
+              this.model.isValid();
           }
       };
   }

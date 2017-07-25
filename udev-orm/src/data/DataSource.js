@@ -1,7 +1,7 @@
 export default class DataSource {
 
   constructor(props = {}) {
-    super();
+    this.props = props;
   }
 
   connect() {

@@ -18,7 +18,7 @@ describe('Model', function() {
        let post = new Post();
        post.title = "This is a Post"
        assert.equal("This is a Post", post.title);
-       assert.equal("This is a Post", post.attributes.title());
+       assert.equal("This is a Post", post.model.title());
     });
   });
 });

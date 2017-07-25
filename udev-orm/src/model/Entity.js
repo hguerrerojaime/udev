@@ -4,14 +4,12 @@ import Validateable from './Validateable';
 
 export default function Entity(options = {},annotation = Entity) {
 
-  const BASE_FINDERS = ['findBy','findAllBy','countBy'];
+  
 
   function enhance(target) {
     let modelConstructor = Validateable(target,annotation);
 
     injectId(target);
-    injectFinders(target);
-    injectWriters(target);
 
     return modelConstructor;
   }
@@ -25,33 +23,13 @@ export default function Entity(options = {},annotation = Entity) {
     });
   }
 
-  function injectFinders(target) {
-
-    target.get = function(id) {};
-    target.all = function(params = {}) {};
-    target.count = function() {};
-    target.where = function(criteria = (c) => {}) {};
-
-    for (let attr in target.meta.model.attrs) {
-      for (let finder of BASE_FINDERS) {
-        let finderName = finder+attr.capitalize();
-        target[finderName] = function(value,params = {}) {};
-      }
-    }
-  }
-
-  function injectWriters(target) {
-    target.prototype.save = function(options = {}) {};
-    target.prototype.delete = function() {};
-    target.insertMany = function(entities = []) {};
-    target.deleteMany = function(entities = []) {};
-  }
-
   return function decorator(target) {
 
     let opts = Object.assign({},{
-      documentName: target.name.uncapitalize()
+      collectionName: target.name.uncapitalize()
     },options);
+
+    target.entity = opts;
 
     return enhance(target);
   }
