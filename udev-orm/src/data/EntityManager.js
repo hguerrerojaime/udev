@@ -22,6 +22,10 @@ export default class EntityManager {
     return this._persistenceContext;
   }
 
+  all(clazz) {
+    throw "not yet implemented";
+  }
+
   get(clazz,id) {
     throw "not yet implemented";
   }
@@ -41,7 +45,7 @@ export default class EntityManager {
     let $em = this;
 
     target.get = function(id) { return $em.get(target,id); };
-    target.all = function(params = {}) {};
+    target.all = function(params = {}) { return $em.all(target); };
     target.count = function() {};
     target.where = function(criteria = (c) => {}) {};
 

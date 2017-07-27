@@ -62,8 +62,27 @@ describe('Sandbox', function() {
 
       all(clazz) {
 
-      }
+        return new Promise((fullfill,reject) => {
+          this.dataSource.connect().then((db) =>  {
+            let cn = this.persistenceContext.getCollectionName(clazz);
+            let collection = db.collection(cn);
+            let result = [];
 
+            let iterate = (err,item) => {
+
+              if (item) {
+                result.push(new clazz(item));
+              } else {
+                fullfill(result);
+              }
+
+            };
+            collection.find().each(iterate);
+          });
+        });
+
+      }
+co
       save(instance) {
         return new Promise((fullfill,reject) => {
             this.dataSource.connect().then((db) => {
@@ -88,17 +107,8 @@ describe('Sandbox', function() {
 
     let em = new MongoEntityManager(dataSource,context);
 
-    it ('play',function(){
-
-      let post = new Post({title:"mongodb",author:"beto"});
-
-      Post.get("59777c7c0be2b323dcec4ac2").then((post) => {
-        console.log(post.json());
-      });
-
-
-
-
+    it('play',function(){
+      let query = Post.all();
     });
 
   });

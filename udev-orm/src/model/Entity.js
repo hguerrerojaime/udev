@@ -4,7 +4,7 @@ import Validateable from './Validateable';
 
 export default function Entity(options = {},annotation = Entity) {
 
-  
+
 
   function enhance(target) {
     let modelConstructor = Validateable(target,annotation);
@@ -18,8 +18,8 @@ export default function Entity(options = {},annotation = Entity) {
     target.meta.model.attr('id');
 
     Object.defineProperty(target.prototype, "id", {
-      set: function(value) { this.attributes.id(value); },
-      get: function() { return this.attributes.id(); }
+      set: function(value) { this.model.id(value); },
+      get: function() { return this.model.id(); }
     });
   }
 
