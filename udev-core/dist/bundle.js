@@ -230,7 +230,6 @@ Object.getVal = function (o, s) {
             return;
         }
     }
-    console.log(o);
 
     return o;
 };
