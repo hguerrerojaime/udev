@@ -1,5 +1,3 @@
-import model from 'node-model';
-
 import Validateable from './Validateable';
 
 export default function Entity(options = {},annotation = Entity) {

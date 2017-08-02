@@ -1,4 +1,3 @@
-import model from 'node-model';
 import validate from 'validate.js';
 import Model from './Model';
 
@@ -16,26 +15,29 @@ export default function Validateable(target,annotation = Validateable) {
 
   function injectValidators(target) {
     target.prototype.isValid = function() {
-      return this.attributes.isValid();
+      return this.model.isValid();
     };
 
     target.meta.model.validators.push(function(self) {
+
        let errors = validate(self.attrs,target.constraints);
 
        if (!errors) {
          errors = {};
        }
 
-       for (let attr in errors) {
-         let attrErrors = errors[attr];
+       self._errors = errors;
 
-         for (let error of attrErrors) {
-           self.errors.push({attr:attr,message:error});
-         }
+      //  for (let attr in errors) {
+       //
+      //    if (!self.errors[attr]) {
+      //      self.errors[attr] = [];
+      //    }
+       //
+      //    self.errors[attr].push(errors[attr]);
+      //  }
 
-       }
 
-       self.attrErrors = errors;
 
     });
   }

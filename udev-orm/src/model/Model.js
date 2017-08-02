@@ -1,6 +1,6 @@
-import model from 'node-model';
-
 import { decorate } from 'udev-core';
+
+import model from '../meta/model';
 
 export default function Model(target,annotation = Model) {
 
@@ -43,8 +43,8 @@ export default function Model(target,annotation = Model) {
     }
 
     Object.defineProperty(target.prototype,"errors", {
-      set: function(value) { throw "this is a read only attribute" },
-      get: function() { return this.model.attrErrors }
+      //set: function(value) { throw "this is a read only attribute" },
+      get: function() { return this.model.errors }
     });
 
   }

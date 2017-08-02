@@ -1,6 +1,6 @@
-import assert from 'assert';
+import { expect } from 'chai';
 
-import { Validateable } from '../../index';
+import { Validateable } from '../../src/index';
 
 describe('Validateable', function() {
   describe('annotating a class with @Validateable', function() {
@@ -24,13 +24,14 @@ describe('Validateable', function() {
     it('should have an invalid email error', function() {
        let post = new Post({ title:"udev-orm for dummies"});
        post.author = "calacohotmail.com";
-       assert.ok(Object.keys(post.errors).includes("author"));
+       expect(post.isValid()).to.be.false;
+       expect(post.errors).to.have.property('author').with.lengthOf(1);
     });
 
     it('should have title and author required errors', function() {
        let post = new Post();
-       assert.ok(Object.keys(post.errors).includes("title"));
-       assert.ok(Object.keys(post.errors).includes("author"));
+       expect(post.errors).to.have.property('title').with.lengthOf(1);
+       expect(post.errors).to.have.property('author').with.lengthOf(1);
     });
   });
 });

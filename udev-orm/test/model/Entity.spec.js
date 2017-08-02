@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { Entity } from '../../index';
+import { Entity } from '../../src/index';
 
 describe('Entity', function() {
   describe('annotating a class with @Entity', function() {
