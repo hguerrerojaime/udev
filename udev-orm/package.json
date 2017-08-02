@@ -4,7 +4,8 @@
   "description": "udev orm",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/**/*.spec.js --compilers js:babel-core/register"
+    "test": "node_modules/.bin/mocha test/**/*.spec.js --compilers js:babel-core/register",
+    "build": "node_modules/.bin/webpack"
   },
   "author": "Humberto Guerrero <hguerrerojaime@gmail.com> (https://github.com/hguerrerojaime)",
   "license": "ISC",
