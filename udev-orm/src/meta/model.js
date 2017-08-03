@@ -7,7 +7,7 @@ export default function model(name) {
     static validators = [];
 
     static attr(name,options = {}) {
-      MetaModel.attrs[name] = options;
+      MetaModel.attrs[name] = Object.assign({},{ type: 'any' },options);
 
       MetaModel.prototype[name] = function(value = undefined) {
          if (!value) {
