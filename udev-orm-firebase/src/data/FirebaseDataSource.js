@@ -7,7 +7,9 @@ export default class FirebaseDataSource extends DataSource {
   }
 
   async connect() {
-    return this.props.firebase.database();
+    let firebase = this.props.firebase;
+    firebase.database.enableLogging(true);
+    return firebase.database();
   }
 
 }
