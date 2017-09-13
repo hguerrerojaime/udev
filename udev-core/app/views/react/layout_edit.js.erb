@@ -1,0 +1,56 @@
+import React from 'react';
+
+import Panel from 'react-jspm/commons/Panel';
+import Form from 'react-jspm/forms/Form';
+import Well from 'react-jspm/commons/Well';
+import RecordActionBar from 'react-jspm/forms/RecordActionBar';
+import alert from 'react-jspm/core/alert';
+import resolver from 'react-jspm/core/di';
+import { browserHistory } from 'react-router';
+
+import <%=@domain_object.class_name%>_Form from 'dynabis/l/<%=@layout_instance.id.to_s%>/form';
+
+export default class <%=@domain_object.class_name%>_New extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = { record: {} };
+
+    this.recordService = resolver.get('recordService');
+
+    this.recordService.get(this.props.params.id).then((record) => {
+        this.setState({ record: record });
+    });
+
+
+  }
+
+  render() {
+    return (
+      <Panel brand="primary" title={"Edit <%=@domain_object.label%> ["+this.state.record.key+"]"}>
+        <Form onSubmit={this.submit.bind(this)}>
+          <Well size="sm">
+            <RecordActionBar mode="edit" params={this.props.params}/>
+          </Well>
+          <<%=@domain_object.class_name%>_Form stateHolder={this}/>
+          <hr />
+          <Well size="sm">
+            <RecordActionBar mode="edit" params={this.props.params} />
+          </Well>
+        </Form>
+      </Panel>
+    );
+  }
+
+  submit(evt) {
+
+
+     alert.confirm("Are you sure?",()=> {
+         this.recordService.update(this.state.record.id,this.state.record).then((saved) => {
+              browserHistory.push('/provider/'+saved.id);
+         });
+     });
+  }
+
+}

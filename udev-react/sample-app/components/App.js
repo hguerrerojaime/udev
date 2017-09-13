@@ -1,10 +1,8 @@
 import React from 'react';
 
-import { c } from '../../src/index';
+import { c } from 'udev';
 
-import Buttons from './Buttons';
-import Modals from './Modals';
-import Inputs from './Inputs';
+import New from 'popo/l/59b965d85572472698afaa9e/new';
 
 export default class App extends React.Component {
 
@@ -28,11 +26,7 @@ export default class App extends React.Component {
             </c.Dropdown>
           </ul>
         </c.Navbar>
-        <c.Panel title="Dashboard" brand="primary">
-          <Buttons />
-          <Modals />
-          <Inputs />
-        </c.Panel>
+        <New />
       </div>
     );
   }

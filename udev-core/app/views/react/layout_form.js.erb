@@ -1,0 +1,44 @@
+import React from 'react';
+
+import Bindable from 'react-jspm/forms/Bindable';
+import FormGroup from 'react-jspm/forms/FormGroup';
+import Field from 'react-jspm/forms/Field';
+import FieldType from 'react-jspm/forms/FieldType';
+import DivCol from 'react-jspm/commons/DivCol';
+import DivRow from 'react-jspm/commons/DivRow';
+
+import { DetailColumn } from 'react-jspm/forms/InputDetail';
+
+export default class <%=@domain_object.class_name%>_Create extends Bindable {
+
+  render() {
+    return (
+      <div>
+      <% @layout[:sections].each do |section| %>
+      <legend><%= section[:title] %></legend>
+      <fieldset>
+      <DivRow>
+        <% section[:columns].each do |column| %>
+           <DivCol width="<%=(12 / section[:columns].length)%>">
+              <% column[:components].each do |component| %>
+                <FormGroup label="<%= component[:field][:label] %>"
+                    width="<%=(12 - section[:columns].length) %>">
+                   <Field type={FieldType.<%= component[:field][:type] %>}
+                     stateHolder={this.props.stateHolder}
+                     model="record.<%= component[:field][:name] %>"
+                     <% component[:field][:options].each do |opt_key,opt_val| %>
+                     <%=opt_key%>="<%=opt_val%>"
+                     <%end%>
+                   />
+                </FormGroup>
+              <% end %>
+           </DivCol>
+        <% end %>
+      </DivRow>
+      </fieldset>
+      <% end %>
+      </div>
+    );
+  }
+
+}

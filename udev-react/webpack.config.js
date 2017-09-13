@@ -38,6 +38,12 @@ var config = {
     contentBase: path.join(PUBLIC_DIR),
     compress: true,
     port: 9000
+  },
+  resolve: {
+    alias: {
+      udev: APP_DIR + '/index.js',
+      popo: 'http://localhost:3000/ui'
+    }
   }
 };
 

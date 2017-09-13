@@ -1,0 +1,99 @@
+import React from 'react';
+
+import Bindable from 'react-jspm/forms/Bindable';
+import FormGroup from 'react-jspm/forms/FormGroup';
+import OutputLabel from 'react-jspm/forms/OutputLabel';
+import DivCol from 'react-jspm/commons/DivCol';
+import DivRow from 'react-jspm/commons/DivRow';
+import resolver from 'react-jspm/core/di';
+import Panel from 'react-jspm/commons/Panel';
+import Well from 'react-jspm/commons/Well';
+import RecordActionBar from 'react-jspm/forms/RecordActionBar';
+
+export default class <%=@domain_object.class_name%>_Show extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.recordService = resolver.get('recordService');
+
+    this.state = { record: {} };
+
+
+    this.recordService.get(this.props.params.id).then((record) => {
+        this.setState({ record: record });
+    });
+
+
+  }
+
+
+  render() {
+    return (
+      <Panel brand="info" title={"Show <%=@domain_object.label%> ["+this.state.record.key+"]"}>
+        <div className="form-horizontal">
+          <Well size="sm">
+            <RecordActionBar mode="show" params={this.props.params} />
+          </Well>
+          <div>
+
+            <% @layout[:sections].each do |section| %>
+            <fieldset>
+            <legend><%= section[:title] %></legend>
+            <DivRow>
+              <% section[:columns].each do |column| %>
+                 <DivCol width="<%=(12 / section[:columns].length)%>">
+                    <% column[:components].each do |component| %>
+                      <FormGroup label="<%= component[:field][:label] %>"
+                          width="<%=(12 - section[:columns].length) %>">
+                         <OutputLabel stateHolder={this}
+                           model="record.<%= component[:field][:name] %>"
+                         />
+                      </FormGroup>
+                    <% end %>
+                 </DivCol>
+              <% end %>
+            </DivRow>
+            <% end %>
+            <legend>Record Data</legend>
+
+            <DivRow>
+                <DivCol width="6">
+                  <FormGroup label="Owner">
+                    <OutputLabel stateHolder={this} model="record.owner.value" />
+                  </FormGroup>
+                </DivCol>
+            </DivRow>
+            <DivRow>
+                <DivCol width="6">
+                  <FormGroup label="Created At">
+                    <OutputLabel stateHolder={this} model="record.created_at" />
+                  </FormGroup>
+                  <FormGroup label="Created By">
+                    <OutputLabel stateHolder={this} model="record.created_by.value" />
+                  </FormGroup>
+                </DivCol>
+                <DivCol width="6">
+                  <FormGroup label="Updated At">
+                    <OutputLabel stateHolder={this} model="record.updated_at" />
+                  </FormGroup>
+                  <FormGroup label="Updated By">
+                    <OutputLabel stateHolder={this} model="record.updated_by.value" />
+                  </FormGroup>
+                </DivCol>
+              </DivRow>
+            </fieldset>
+          </div>
+          <hr />
+          <Well size="sm">
+            <RecordActionBar mode="show" params={this.props.params}/>
+          </Well>
+        </div>
+      </Panel>
+
+    );
+
+
+  }
+
+}
