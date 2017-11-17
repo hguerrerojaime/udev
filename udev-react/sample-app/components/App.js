@@ -2,8 +2,6 @@ import React from 'react';
 
 import { c } from 'udev';
 
-import New from 'popo/l/59b965d85572472698afaa9e/new';
-
 export default class App extends React.Component {
 
   render() {
@@ -26,7 +24,7 @@ export default class App extends React.Component {
             </c.Dropdown>
           </ul>
         </c.Navbar>
-        <New />
+
       </div>
     );
   }
