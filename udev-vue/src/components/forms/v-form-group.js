@@ -5,15 +5,22 @@ Vue.component('v-form-group', {
     label: {
       type: String,
       required: true
+    },
+    width: {
+      type: Number,
+      default: 9
+    },
+    size: {
+      type: String,
+      default: "md"
     }
   },
   template: `
     <div class="form-group">
-      <label class="col-md-1 control-label">{{ label }}</label>
-      <div class="col-md-11">
+      <label v-bind:class="'col-'+size+'-'+(12-width)+' control-label'">{{ label }}</label>
+      <div v-bind:class="'col-'+size+'-'+width">
         <slot></slot>
       </div>
     </div>
-
   `
 });

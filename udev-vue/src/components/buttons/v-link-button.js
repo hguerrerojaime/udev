@@ -12,8 +12,7 @@ Vue.component('v-link-button', {
     },
     href: {
       type: String,
-      default: "javascript:void(0);",
-      required: true
+      default: "javascript:void(0);"
     },
     icon: {
       type: String

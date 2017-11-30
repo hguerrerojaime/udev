@@ -15,6 +15,13 @@ Vue.component('v-button', {
     }
   },
   template: `
-    <button v-bind:class="'btn btn-'+brand"><i v-bind:class="icon" v-if="icon"></i> {{label}}</button>
-  `
+    <button
+      v-on:click="onClick"
+      v-bind:class="'btn btn-'+brand"><i v-bind:class="icon" v-if="icon"></i> {{label}}</button>
+  `,
+  methods: {
+    onClick: function() {
+      this.$emit('click');
+    }
+  }
 });

@@ -1,14 +1,12 @@
 const Vue = require('vue').default;
 
-const ALLOWED_TEXT_CASES = ['lower','upper','any'];
-
 Vue.component('v-input-text', {
   props: {
-    case: {
+    textCase: {
       type: String,
       default: "any",
       validator: function(value) {
-          return ALLOWED_TEXT_CASES.includes(value);
+          return ['any','lower','upper','capital'].includes(value);
       }
     },
     vModel: String
@@ -17,23 +15,53 @@ Vue.component('v-input-text', {
     prop: 'vModel',
     event: 'input'
   },
+  data: function() {
+    return {
+      textCaseConfig: {
+        any:  {
+          transform: function(value) {
+            return value;
+          },
+          css: ""
+        },
+        lower: {
+          transform: function(value) {
+            return value.toLowerCase();
+          },
+          css: "text-transform: lowercase;"
+        },
+        upper: {
+          transform: function(value) {
+            return value.toUpperCase();
+          },
+          css: "text-transform: uppercase;"
+        },
+        capital: {
+          transform: function(value) {
+            return value.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+          },
+          css: "text-transform: capitalize;"
+        }
+      }
+    }
+  },
+  created: function() {
+    this.updateValue(this.$props.vModel);
+  },
   methods: {
 		updateValue(value) {
 
-      let emmitingValue = value;
 
+      let emitingValue = undefined;
       if (value) {
-        if (this.$props.case === "lower") {
-          emmitingValue = value.toLowerCase();
-        } else if (this.$props.case === "upper") {
-          emmitingValue = value.toUpperCase();
-        }
+        emitingValue = this.textCaseConfig[this.$props.textCase].transform(value);
       }
 
-			this.$emit('input', emmitingValue);
+			this.$emit('input', emitingValue);
 		}
+
 	},
   template: `
-    <input class="form-control" type="text" :value="vModel" @input="updateValue($event.target.value)" />
+    <input v-bind:style="textCaseConfig[textCase].css" class="form-control" type="text" :value="vModel" @input="updateValue($event.target.value)" />
   `
 });

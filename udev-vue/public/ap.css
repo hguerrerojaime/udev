@@ -2,7 +2,24 @@ body {
   padding-top: 40px;
 }
 
+.navlist {
+  padding-left: 0;
+  margin: 0;
+}
 
+.navlist li {
+  display: inline;
+  list-style-type: none;
+}
+
+.form-container {
+
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 9px;
+  padding-top: 25px;
+  margin-bottom: 20px;
+}
 
 .navbar-header .navbar-brand {
   color: #fff;
