@@ -31,11 +31,11 @@ Vue.component('v-record-actions', {
         <v-well size="sm">
           <ul class="navlist">
             <li v-for="action in actions[mode]">
-              <v-button v-if="action.type === 'submit'"
+              <v-submit-button v-if="action.type === 'submit'"
                 v-bind:label="action.label"
                 v-bind:brand="action.brand"
                 v-bind:icon="action.icon">
-              </v-button>
+              </v-submit-button>
               <v-link-button v-if="action.type === 'link'"
                 v-bind:label="action.label"
                 v-bind:brand="action.brand"

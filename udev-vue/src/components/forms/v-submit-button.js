@@ -1,6 +1,6 @@
 const Vue = require('vue').default;
 
-Vue.component('v-button', {
+Vue.component('v-submit-button', {
   props: {
     brand: {
       type: String,
@@ -12,17 +12,13 @@ Vue.component('v-button', {
     },
     icon: {
       type: String
-    },
-    size: {
-      type: String,
-      default: "md"
     }
   },
   template: `
     <button
-      type="button"
+      type="submit"
       v-on:click="onClick"
-      v-bind:class="'btn btn-'+brand+' btn-'+size"><i v-bind:class="icon" v-if="icon"></i> {{label}}</button>
+      v-bind:class="'btn btn-'+brand"><i v-bind:class="icon" v-if="icon"></i> {{label}}</button>
   `,
   methods: {
     onClick: function() {

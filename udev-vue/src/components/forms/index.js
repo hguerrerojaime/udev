@@ -8,3 +8,6 @@ require('./v-form-group');
 require('./v-record-actions');
 require('./v-record-form');
 require('./v-input-phone');
+require('./v-input-number');
+require('./v-input-detail');
+require('./v-submit-button');

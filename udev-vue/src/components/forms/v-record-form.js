@@ -11,8 +11,13 @@ Vue.component('v-record-form', {
     },
     recordId: String
   },
+  methods: {
+    emitSubmit(e) {
+      this.$emit('submit',e);
+    }
+  },
   template: `
-    <form v-bind:class="'form form-'+oritentation">
+    <form v-bind:class="'form form-'+oritentation" v-on:submit="emitSubmit">
       <v-record-actions mode="write" v-bind:record-id="recordId"></v-record-actions>
       <v-div-row>
         <v-div-col>

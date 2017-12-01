@@ -31,7 +31,7 @@ Vue.component('v-input-multiselect', {
     });
 
     inputSelect.on('change',function(e) {
-    //  $this.updateValue(inputSelect.select2('val'));
+      $this.updateValue(inputSelect.select2('val'));
     });
   },
   template: `
