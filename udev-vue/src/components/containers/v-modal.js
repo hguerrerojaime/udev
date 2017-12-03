@@ -30,6 +30,9 @@ Vue.component('v-modal', {
   methods: {
     show() {
       $(this.$el).modal('show');
+    },
+    hide() {
+      $(this.$el).modal('hide');
     }
   },
   mounted: function() {

@@ -10,4 +10,5 @@ require('./v-record-form');
 require('./v-input-phone');
 require('./v-input-number');
 require('./v-input-detail');
+require('./v-detail-col');
 require('./v-submit-button');
