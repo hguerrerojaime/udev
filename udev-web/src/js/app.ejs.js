@@ -1,6 +1,5 @@
+const Vue = require('vue');
 
-const Vue = require('vue').default;
-const moment = require('moment');
 
 var app = new Vue({
   el: "#app",

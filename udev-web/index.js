@@ -5,9 +5,7 @@ var app = express();
 var ejs = require('ejs');
 
 app.use('/static', express.static(__dirname + '/static'));
-app.use('/static', express.static(__dirname + '/node_modules/udev-vue/dist'));
-app.use('/static', express.static(__dirname + '/node_modules/systemjs/dist'));
-app.use('/node_modules', express.static(__dirname + '/node_modules'));
+app.use('/jspm_packages', express.static(__dirname + '/jspm_packages'));
 
 app.get('/', function (req, res) {
   ejs.renderFile('src/html/index.ejs.html', {}, function(err,html) {
@@ -15,7 +13,7 @@ app.get('/', function (req, res) {
   });
 });
 
-app.get('/app.js', function (req, res) {
+app.get('/src/app.js', function (req, res) {
 
   res.set('Content-Type', 'application/javascript');
 

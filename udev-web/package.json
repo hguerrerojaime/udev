@@ -10,7 +10,40 @@
   "license": "ISC",
   "dependencies": {
     "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "systemjs": "^0.20.19"
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "jspm": "^0.17.0-beta.47"
+  },
+  "jspm": {
+    "name": "udev-web",
+    "main": "app.js",
+    "configFiles": {
+      "jspm": "static/jspm.config.js"
+    },
+    "dependencies": {
+      "udev-vue": "npm:udev-vue@1.0.0",
+      "vue": "npm:vue@^2.5.9"
+    },
+    "devDependencies": {},
+    "peerDependencies": {
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "jpex": "npm:jpex@^2.0.0",
+      "path": "npm:jspm-nodelibs-path@^0.2.0",
+      "process": "npm:jspm-nodelibs-process@^0.2.0",
+      "util": "npm:jspm-nodelibs-util@^0.2.0"
+    },
+    "overrides": {
+      "npm:jquery@3.2.1": {
+        "format": "amd"
+      },
+      "npm:moment@2.19.3": {
+        "jspmNodeConversion": false
+      },
+      "npm:vue@2.5.9": {
+        "main": "dist/vue.esm.js",
+        "format": "amd"
+      }
+    }
   }
 }
