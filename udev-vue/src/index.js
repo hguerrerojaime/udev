@@ -1,2 +1,2 @@
 require('./boot');
-require('./app');
+//require('./app');
