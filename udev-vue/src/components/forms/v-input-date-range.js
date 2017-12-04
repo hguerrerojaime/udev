@@ -1,18 +1,18 @@
 const Vue = require('vue').default;
 const moment = require('moment');
-const format = require('string-format');;
+const format = require('string-format');
 require('bootstrap-daterangepicker');
 
-
+const DATE_RANGE = require('../../types/index').dateRange;
 
 Vue.component('v-input-date-range', {
   props: {
     vModel: Object,
-    displayFormat: {
+    format: {
       type: String,
       default: "From: [{start}] To: [{end}]"
     },
-    format: {
+    dateFormat: {
       type: String,
       default: "YYYY-MM-DD"
     }
@@ -28,11 +28,10 @@ Vue.component('v-input-date-range', {
 	},
   watch: {
     vModel: function(newValue) {
-      this.dateText = format(this.$props.displayFormat,{
-        start: newValue.start.format(this.$props.format),
-        end: newValue.end.format(this.$props.format)
+      this.dateText = DATE_RANGE.toS(newValue,{
+        format: this.$props.format,
+        dateFormat: this.$props.dateFormat
       });
-
     }
   },
   data: function() {
@@ -45,9 +44,9 @@ Vue.component('v-input-date-range', {
     let $this = this;
 
     if (this.$props.vModel) {
-      $this.dateText = format(this.$props.displayFormat,{
-        start: this.$props.vModel.start.format(this.$props.format),
-        end: this.$props.vModel.end.format(this.$props.format)
+      $this.dateText = DATE_RANGE.toS(this.$props.vModel,{
+        format: this.$props.format,
+        dateFormat: this.$props.dateFormat
       });
     }
 

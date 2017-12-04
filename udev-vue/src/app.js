@@ -1,8 +1,6 @@
-require('./components/index');
+
 const Vue = require('vue').default;
 const moment = require('moment');
-
-const $spinner = require('./utils/spinner').default;
 
 var app = new Vue({
   el: "#app",
@@ -26,15 +24,17 @@ var app = new Vue({
       { icon: "fa fa-user", href:"/", label: "Users" }
     ]
   },
-  //mounted: $spinner.hide,
   methods: {
     submit: function(e) {
       e.preventDefault();
 
       console.log(this.$data);
-      $spinner.show();
 
-      setTimeout(()=> $spinner.hide(), 2000);
+      console.log(this);
+
+      this.$spinner.show();
+
+      setTimeout(()=> this.$spinner.hide(), 2000);
     }
   },
   template: `
@@ -93,6 +93,11 @@ var app = new Vue({
                     field="phone"
                     type="phone"
                     label="Phone Number"
+                  ></v-detail-col>
+                  <v-detail-col
+                    field="birthDate"
+                    type="date"
+                    label="Birth Date"
                   ></v-detail-col>
                 </v-input-detail>
               </v-form-group>

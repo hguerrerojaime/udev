@@ -26,6 +26,7 @@
     "select2": "4.0",
     "string-format": "^0.5.0",
     "vue": "^2.5.3",
-    "vue-config": "^1.0.0"
+    "vue-config": "^1.0.0",
+    "vue-inject": "^1.0.1"
   }
 }

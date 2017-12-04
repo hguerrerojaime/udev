@@ -1,5 +1,7 @@
 const Vue = require('vue').default;
 
+const DATA_TYPES = require('../../types/index');
+
 Vue.component('v-input-detail', {
   props: {
     vModel: Array
@@ -34,17 +36,7 @@ Vue.component('v-input-detail', {
 
 
     return {
-      fieldTypes: {
-        text: {
-          component: 'v-input-text'
-        },
-        date: {
-          component: 'v-input-date'
-        },
-        phone: {
-          component: 'v-input-phone'
-        }
-      },
+      fieldTypes: DATA_TYPES,
       columns: columns,
       newItemForm: newItemForm
     }
@@ -70,7 +62,7 @@ Vue.component('v-input-detail', {
         <v-modal title="New Item" ref="newItemModal">
          <form class="form-horizontal" v-on:submit="submitNewItem" ref="formElement">
           <v-form-group v-for="col in columns" :key="col.field" v-bind:label="col.label">
-            <component v-bind:is="fieldTypes[col.type].component" v-model="newItemForm[col.field]" v-bind="col.fieldOpts"></component>
+            <component v-bind:is="fieldTypes[col.type].components.input" v-model="newItemForm[col.field]" v-bind="col.fieldOpts"></component>
           </v-form-group>
          </form>
          <div slot="footer" class="pull-right">
@@ -89,7 +81,7 @@ Vue.component('v-input-detail', {
         <tbody>
           <tr v-for="item in vModel">
             <td v-for="col in columns">
-              <component v-bind:is="'v-output-'+col.type" v-model="item[col.field]"></component>
+              <component v-bind:is="fieldTypes[col.type].components.output" v-model="item[col.field]"></component>
             </td>
           </tr>
         </tbody>

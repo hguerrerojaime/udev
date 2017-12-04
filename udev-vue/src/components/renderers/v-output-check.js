@@ -1,17 +1,17 @@
 const Vue = require('vue').default;
 
-const TEXT = require('../../types/index').text;
+const CHECK = require('../../types/index').check;
 
-Vue.component('v-output-text', {
+Vue.component('v-output-check', {
   props: {
-    vModel: String
+    vModel: Boolean
   },
   model: {
     prop: 'vModel'
   },
   data: function() {
     return {
-      value: TEXT.toS(this.$props.vModel)
+      value: CHECK.toS(this.$props.vModel)
     };
   },
   template: `

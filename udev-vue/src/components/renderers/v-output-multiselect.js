@@ -1,8 +1,8 @@
 const Vue = require('vue').default;
 
-const TEXT = require('../../types/index').text;
+const MULTISELECT = require('../../types/index').multiselect;
 
-Vue.component('v-output-text', {
+Vue.component('v-output-multiselect', {
   props: {
     vModel: String
   },
@@ -11,7 +11,7 @@ Vue.component('v-output-text', {
   },
   data: function() {
     return {
-      value: TEXT.toS(this.$props.vModel)
+      value: MULTISELECT.toS(this.$props.vModel)
     };
   },
   template: `

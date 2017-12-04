@@ -1,17 +1,17 @@
 const Vue = require('vue').default;
 
-const TEXT = require('../../types/index').text;
+const NUMBER = require('../../types/index').number;
 
-Vue.component('v-output-text', {
+Vue.component('v-output-number', {
   props: {
-    vModel: String
+    vModel: Number
   },
   model: {
     prop: 'vModel'
   },
   data: function() {
     return {
-      value: TEXT.toS(this.$props.vModel)
+      value: NUMBER.toS(this.$props.vModel)
     };
   },
   template: `

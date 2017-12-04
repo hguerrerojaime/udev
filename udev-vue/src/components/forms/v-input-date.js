@@ -23,7 +23,11 @@ Vue.component('v-input-date', {
 	},
   watch: {
     vModel: function(newDate) {
-      this.dateText = newDate.format(this.$props.format);
+      if (newDate) {
+        this.dateText = newDate.format(this.$props.format);
+      } else {
+        this.dateText = undefined;
+      }
     }
   },
   data: function() {

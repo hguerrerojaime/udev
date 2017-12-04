@@ -2,10 +2,7 @@ const Vue = require('vue').default;
 
 require('jquery-mask-plugin');
 
-const LAND_LINE = 'L';
-const MOBILE = 'M';
-const FAX = 'F';
-const PHONE_TYPES = [LAND_LINE,MOBILE,FAX];
+const PHONE = require('../../types/index').phone;
 
 Vue.component('v-input-phone', {
   props: {
@@ -41,23 +38,12 @@ Vue.component('v-input-phone', {
     }
 	},
   data: function() {
+    let $this = this;
+
     return {
-      phoneTypes: {
-        [LAND_LINE]: {
-          label: "Land Line",
-          icon: "fa fa-phone"
-        },
-        [MOBILE]: {
-          label: "Mobile",
-          icon: "fa fa-mobile"
-        },
-        [FAX]: {
-          label: "Fax",
-          icon: "fa fa-fax"
-        }
-      },
+      phoneTypes: PHONE.types,
       phoneNumber: undefined,
-      selectedType: LAND_LINE
+      selectedType: PHONE.LAND_LINE
     };
   },
   mounted: function() {
@@ -68,6 +54,14 @@ Vue.component('v-input-phone', {
         $this.updateValue(value);
       }
     });
+  },
+  watch: {
+    vModel: function(val, oldVal) {
+      if (!val) {
+        this.phoneNumber = undefined;
+        $(this.$el).find('input')[0].value = null;
+      }
+    }
   },
   template: `
     <div class="input-group">

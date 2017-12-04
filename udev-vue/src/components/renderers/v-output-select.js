@@ -1,6 +1,6 @@
 const Vue = require('vue').default;
 
-const TEXT = require('../../types/index').text;
+const SELECT = require('../../types/index').select;
 
 Vue.component('v-output-text', {
   props: {
@@ -11,7 +11,7 @@ Vue.component('v-output-text', {
   },
   data: function() {
     return {
-      value: TEXT.toS(this.$props.vModel)
+      value: SELECT.toS(this.$props.vModel)
     };
   },
   template: `
