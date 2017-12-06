@@ -5,7 +5,8 @@ const webpack = require("webpack");
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: 'udev-vue.js',
+    library: 'udev',
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {

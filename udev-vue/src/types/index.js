@@ -6,5 +6,6 @@ module.exports = {
   date: require('./date'),
   select: require('./select'),
   multiselect: require('./multiselect'),
-  detail: require('./detail')
+  detail: require('./detail'),
+  number: require('./number')
 };

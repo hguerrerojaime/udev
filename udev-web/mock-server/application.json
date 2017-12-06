@@ -1,0 +1,21 @@
+[{
+  "id": "hr",
+  "name": "HR Management",
+  "menuItems": [
+    { "icon": "fa fa-male", "href":"/hr?do=employee&a=edit", "label": "Employees" },
+    { "icon": "fa fa-users", "href":"/hr?do=position&a=edit", "label": "Positions" }
+  ]
+}, {
+  "id": "sales",
+  "name": "Sales",
+  "menuItems": [
+    { "icon": "fa fa-flash", "href":"/sales?do=sale&a=edit", "label": "Point of Sale" }
+  ]
+}, {
+  "id": "inv",
+  "name": "Inventory",
+  "menuItems": [
+    { "icon": "fa fa-archive", "href":"/products", "label": "Products" },
+    { "icon": "fa fa-copyright", "href":"/brands", "label": "Brands" }
+  ]
+}]

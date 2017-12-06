@@ -12,6 +12,10 @@ Vue.component('v-input-select', {
     enableInput: {
       type: Boolean,
       default: false
+    },
+    select2: {
+      type: Boolean,
+      default: true
     }
   },
   model: {
@@ -26,11 +30,13 @@ Vue.component('v-input-select', {
   mounted: function() {
     let $this = this;
 
-    let inputSelect = $(this.$el).select2({
-      tags: $this.$props.enableInput
-    });
+    let inputSelect = $(this.$el);
 
-
+    if ($this.$props.select2) {
+      inputSelect.select2({
+        tags: $this.$props.enableInput
+      });
+    }
 
     inputSelect.on('change',function() {
       $this.updateValue(this.value);

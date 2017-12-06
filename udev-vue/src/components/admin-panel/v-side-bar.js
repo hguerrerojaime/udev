@@ -5,11 +5,20 @@ Vue.component('v-side-bar', {
     menuItems: {
       type: Array,
       default: []
+    },
+    applicationItems: {
+      type: Array,
+      default: []
+    },
+    defaultAppCode: {
+      type: String,
+      default: ""
     }
   },
   data: function() {
     return {
-      filteredItems: this.$props.menuItems
+      filteredItems: this.$props.menuItems,
+      selectedApplication: this.$props.defaultAppCode
     }
   },
   methods: {
@@ -30,9 +39,25 @@ Vue.component('v-side-bar', {
       <div class="clear"></div>
     </div>
     <div class="divider"></div>
+    <div class="profile-sidebar" style="padding: 0;">
+      <form class="form" v-bind:action="'/'+selectedApplication"">
+        <div class="form-group">
+          <label>Application Navigator</label>
+          <div class="input-group">
+            <select class="form-control" v-model="selectedApplication">
+              <option v-for="item in applicationItems" :value="item.id">{{ item.name }}</option>
+            </select>
+            <span class="input-group-btn">
+              <v-submit-button label="Go" brand="primary"></v-submit-button>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="divider"></div>
     <form role="search">
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" @input="filterItems($event.target.value)">
+        <input type="text" class="form-control" placeholder="Menu Search" @input="filterItems($event.target.value)">
       </div>
     </form>
     <ul class="nav menu">

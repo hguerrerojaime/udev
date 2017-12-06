@@ -1,0 +1,40 @@
+[
+  {
+   "id": "employee",
+   "sections": [
+     {
+       "columns": [
+         {
+           "components": [
+             { "field": "name", "type": "text", "label": "Name", "fieldOptions": { "textCase":"upper" } },
+             { "field": "skills", "type": "multiselect", "label": "Skills", "fieldOptions": { "items":["Java","Javascript","C#"] } },
+             { "field": "phone", "type": "phone", "label": "Phone Number" }
+           ]
+         },
+         {
+           "components": []
+         }
+       ]
+     }
+   ]
+ },
+ {
+  "id": "position",
+    "sections": [
+      {
+        "columns": [
+          {
+            "components": [
+              { "field": "description", "type": "text", "label": "Name", "fieldOptions": { "textCase":"upper" } },
+              { "field": "skills", "type": "multiselect", "label": "Skills", "fieldOptions": { "items":["Java","Javascript","C#"] } },
+              { "field": "yoe", "type": "number", "label": "Years of Experience" }
+            ]
+          },
+          {
+            "components": []
+          }
+        ]
+      }
+    ]
+  }
+]

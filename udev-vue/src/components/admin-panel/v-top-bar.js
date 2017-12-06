@@ -1,6 +1,12 @@
 const Vue = require('vue').default;
 
 Vue.component('v-top-bar', {
+  props: {
+    title: {
+      type: String,
+      default: "Application"
+    }
+  },
   template: `
   <nav class="navbar nav navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
@@ -9,7 +15,8 @@ Vue.component('v-top-bar', {
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span></button>
-        <a class="navbar-brand" href="#">uDev AP</a>
+        <a class="navbar-brand" href="#" style="text-transform:none;">{{ title }} - uDev</a>
+
       </div>
     </div><!-- /.container-fluid -->
   </nav>
