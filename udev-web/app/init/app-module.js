@@ -1,15 +1,17 @@
 function injectValues(appModule,values = {}) {
   for (let key in values) {
     let value = values[key];
-    console.log(`Injecting value [${key}] => [${JSON.stringify(value)}]`);
+    console.log(`Register value [${key}]`);
     appModule.value(key,value);
   }
+  console.log("Register value [currentModule]");
+  appModule.value('currentModule',appModule);
 }
 
 function injectFactories(appModule, factories = {}) {
   for (let key in factories) {
     let value = factories[key];
-    console.log(`Injecting value [${key}] => [${JSON.stringify(value)}]`);
+    console.log(`Register factory [${key}]`);
     appModule.factory(key,value);
   }
 }
@@ -17,7 +19,7 @@ function injectFactories(appModule, factories = {}) {
 function injectServices(appModule, services= {}) {
   for (let key in services) {
     let value = services[key];
-    console.log(`Injecting value [${key}] => [${JSON.stringify(value)}]`);
+    console.log(`Register service [${key}]`);
     appModule.service(key,value);
   }
 }
@@ -30,7 +32,7 @@ function injectDependencies(appModule,dependencies = {}) {
 
 function createAppModule(dependencies = require('./dependencies'),DI = require('node-di')) {
   let appModule = DI.module('appModule',[]);
-  injectDependencies(appModule);
+  injectDependencies(appModule,dependencies);
   return appModule;
 }
 

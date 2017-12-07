@@ -11,3 +11,5 @@ const ViewController = TemplateController._extend({
     return ".ejs.html";
   }
 });
+
+module.exports = ViewController;

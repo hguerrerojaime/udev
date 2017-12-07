@@ -11,7 +11,9 @@ const RequestProcessor = JClass._extend({
       $response: res
     });
 
-    controller.setResponseContentType(response);
-    controller.processResponse(actionPromise,response);
+    controller.setResponseContentType(res);
+    controller.respond(actionPromise,res);
   }
 });
+
+module.exports = RequestProcessor;

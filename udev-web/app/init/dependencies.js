@@ -3,9 +3,11 @@ module.exports = {
 
   },
   factories: {
-    applicationViewController: require('../controllers/application-view-controller')
+    applicationViewController: require('../controllers/application-view-controller'),
+    applicationJsController: require('../controllers/application-js-controller'),
   },
   services: {
-    applicationBuilderService: require('../services/application-builder-service')
+    appBuilder: require('../services/application-builder-service'),
+    requestProcessor: require('../core/request-processor')
   }
 };

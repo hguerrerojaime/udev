@@ -1,10 +1,16 @@
 exports.parameterfy = (function() {
-    var pattern = /function[^(]*\(([^)]*)\)/;
+    var pattern = /[a-zA-Z_$][a-zA-Z_$0-9]*[^(]*\(([^)]*)\)/;
 
     return function(func, instance = undefined) {
         // fails horribly for parameterless functions ;)
 
-        var args = func.toString().match(pattern)[1].split(/,\s*/).filter((arg) => arg != '');
+        var matcher = func.toString().match(pattern);
+
+        var args = [];
+
+        if (matcher) {
+          args = matcher[1].split(/,\s*/).filter((arg) => arg != '');
+        }
 
         return function() {
             var named_params = arguments[arguments.length - 1];
@@ -14,6 +20,8 @@ exports.parameterfy = (function() {
             if (instance) {
               $instance = instance;
             }
+
+            console.log(typeof named_params === 'object');
 
             if (typeof named_params === 'object') {
                 var params = [].slice.call(arguments, 0, -1);
