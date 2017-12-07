@@ -4,6 +4,9 @@ const ejs = require('ejs');
 const superagent = require('superagent');
 const uglify = require('uglify-es');
 
+
+
+
 app.use('/static', express.static(__dirname + '/../../static'));
 app.use('/udev-vue.js', express.static(__dirname + '/../../node_modules/udev-vue/dist/udev-vue.js'));
 app.use('/af7ae505a9eed503f8b8e6982036873e.woff2',

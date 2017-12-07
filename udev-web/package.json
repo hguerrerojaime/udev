@@ -13,6 +13,8 @@
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "jclass": "^1.2.1",
+    "node-di": "0.0.3",
     "superagent": "^3.8.1",
     "uglify-es": "^3.2.1"
   },
