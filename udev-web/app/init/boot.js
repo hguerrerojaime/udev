@@ -11,7 +11,7 @@ function configureRouter(app,appModule,routes = require('../config/routes')) {
   console.log("Configuring router...");
   for (let key in routes) {
     let route = routes[key];
-    console.log(`configuring route ${key} to controller: ${route.controller}, action: ${route.action}`);
+    console.log(`Configuring route ${key} to controller: ${route.controller}, action: ${route.action}`);
     app[route.method](key,function(req,res) {
       let controller = appModule.factory(`${route.controller}Controller`);
       let action = controller[route.action];

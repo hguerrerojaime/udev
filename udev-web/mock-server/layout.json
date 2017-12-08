@@ -1,14 +1,14 @@
 [
   {
-   "id": "employee",
+   "id": "16719ced-6e08-4339-b560-98ae6785263c",
    "sections": [
      {
        "columns": [
          {
            "components": [
              { "field": "name", "type": "text", "label": "Name", "fieldOptions": { "textCase":"upper" } },
-             { "field": "skills", "type": "multiselect", "label": "Skills", "fieldOptions": { "items":["Java","Javascript","C#"] } },
-             { "field": "phone", "type": "phone", "label": "Phone Number" }
+             { "field": "jobTitle", "type": "text", "label": "Job Title" },
+             { "field": "phoneNumber", "type": "text", "label": "Phone Number" }
            ]
          },
          {
@@ -19,7 +19,7 @@
    ]
  },
  {
-  "id": "position",
+  "id": "2a078c1e-64ba-461f-bdbf-58393420e8cc",
     "sections": [
       {
         "columns": [
@@ -36,5 +36,23 @@
         ]
       }
     ]
-  }
+  },
+  {
+   "id": "88647d45-3561-4329-88ae-4a2483b1fde1",
+     "sections": [
+       {
+         "columns": [
+           {
+             "components": [
+               { "field": "description", "type": "text", "label": "Name", "fieldOptions": { "textCase":"upper" } },
+               { "field": "brand", "type": "select", "label": "Brand", "fieldOptions": { "items":["Sony","Samsung","Asus"] } }
+             ]
+           },
+           {
+             "components": []
+           }
+         ]
+       }
+     ]
+   }
 ]

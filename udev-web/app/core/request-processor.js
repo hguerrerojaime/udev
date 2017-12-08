@@ -12,7 +12,7 @@ const RequestProcessor = JClass._extend({
     });
 
     controller.setResponseContentType(res);
-    controller.respond(actionPromise,res);
+    controller.respond(actionPromise,req,res);
   }
 });
 

@@ -7,14 +7,39 @@ const ApplicationJsController = JsController._extend({
   async index($request) {
     return 'index';
   },
-  async edit($request) {
+  async recordList($request) {
+    let view;
+    let viewId = $request.query.v;
+
+    if (!viewId) {
+      view = {
+        domainObject: {
+          id: $request.query.do,
+          pluralName: "Employees"
+        },
+        fields: [
+          { name: "__toS", label: "Record" }
+        ]
+      }
+
+      return {
+        template: "record-list",
+        data: {
+          view:view
+        }
+      };
+    }
+  },
+  async recordEdit($request) {
     let layout = await this.appBuilder.getLayout($request.query.do);
+
     return {
-      template: 'edit',
+      template: 'record-edit',
       data: {
         formData: buildFormData(layout),
         fieldOptions: buildFieldOptions(layout),
-        layout: layout
+        layout: layout,
+        recId: $request.query.id
       }
     };
   }

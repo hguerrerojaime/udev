@@ -1,9 +1,9 @@
 module.exports = {
   Vue: require('vue').default,
   boot: require('./boot'),
-  moment: require('moment')
+  moment: require('moment'),
+  superagent: require('superagent')
 };
 
-//exports.boot = 1;
-
-//require('./app');
+// require('./boot')();
+// require('./app');

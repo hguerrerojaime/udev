@@ -7,8 +7,7 @@ Vue.component('v-link-button', {
       default: "default"
     },
     label: {
-      type: String,
-      required: true
+      type: String
     },
     href: {
       type: String,
@@ -19,6 +18,9 @@ Vue.component('v-link-button', {
     }
   },
   template: `
-    <a v-bind:href="href" v-bind:class="'btn btn-'+brand"><i v-bind:class="icon" v-if="icon"></i> {{label}}</a>
+    <a v-bind:href="href" v-bind:class="'btn btn-'+brand">
+      <i v-bind:class="icon" v-if="icon"></i>
+      <span v-if="label">{{label}}</span>
+    </a>
   `
 });

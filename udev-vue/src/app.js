@@ -8,9 +8,16 @@ var app = new Vue({
     form: {
       name: "Humberto Guerrero"
     },
-    menuItems: [
-      { icon: "fa fa-dashboard", href:"/", label: "Dashboard" },
-      { icon: "fa fa-user", href:"/", label: "Users" }
+    appInfo: {
+      menuItems: [
+        { icon: "fa fa-dashboard", href:"/", label: "Dashboard" },
+        { icon: "fa fa-user", href:"/", label: "Users" }
+      ],
+      applications: []
+    },
+    records: [
+      { name: "Beto", profession: "Architect" },
+      { name: "Mauro", profession: "Footballer" }
     ]
   },
   methods: {
@@ -23,21 +30,29 @@ var app = new Vue({
     }
   },
   template: `
-  <v-admin-panel v-bind:menu-items="menuItems">
+  <v-admin-panel v-bind:app-info="appInfo">
     <v-panel title="Dashboard">
-        <v-record-form v-on:submit="submit">
-          <v-div-row>
-           <v-div-col>
-             <v-form-group label="Name">
-               <component is="v-input-text" v-model="form.name" text-case="upper"></component>
-             </v-form-group>
-            </v-div-col>
-          </v-div-row>
-        </v-record-form>
-      </v-panel>
-      <v-modal title="Confirm" ref="modal">
-        <li slot="props"></li>
-      </v-modal>
+      <v-datatable v-model="records">
+        <template slot="head">
+          <v-dt-col-head field="id" label="Actions" class="actions-column"></v-dt-col-head>
+          <v-dt-col-head field="name" label="Name"></v-dt-col-head>
+          <v-dt-col-head field="profession" label="Profession"></v-dt-col-head>
+        </template>
+        <td slot="id" slot-scope="rec">
+          <div class="btn-group">
+            <v-button icon="fa fa-search"></v-button>
+            <v-button icon="fa fa-pencil"></v-button>
+            <v-button icon="fa fa-close"></v-button>
+          </div>
+        </td>
+        <td slot="name" slot-scope="rec">
+            {{ rec.value }}
+        </td>
+        <td slot="profession" slot-scope="rec">
+            {{ rec.value }}
+        </td>
+      </v-datatable>
+    </v-panel>
   </v-admin-panel>
   `
 });

@@ -21,12 +21,15 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "bootstrap-daterangepicker": "^2.1.25",
+    "datatables": "^1.10.13",
+    "datatables-bootstrap": "0.0.1",
     "font-awesome-webpack": "0.0.5-beta.2",
     "jquery": "^3.2.1",
     "jquery-mask-plugin": "^1.14.12",
     "moment": "^2.19.2",
     "select2": "4.0",
     "string-format": "^0.5.0",
+    "superagent": "^3.8.1",
     "vue": "^2.5.3",
     "vue-config": "^1.0.0",
     "vue-inject": "^1.0.1"

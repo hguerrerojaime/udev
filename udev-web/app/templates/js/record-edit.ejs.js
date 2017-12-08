@@ -10,9 +10,19 @@ var app = new Vue({
     appInfo: appInfo
   },
   created: function() {
-
+    <% if (recId) { %>
+    this.loadRecord("<%=recId%>")
+    <% } %>
   },
   methods: {
+    <% if (recId) { %>
+    loadRecord: function(id) {
+      udev.superagent.get(`http://localhost:3001/employee/${id}`).then((response) => {
+        console.log(response.body);
+        this.form = response.body;
+      });
+    },
+    <% } %>
     submit: function(e) {
       e.preventDefault();
 
@@ -26,7 +36,7 @@ var app = new Vue({
   template: `
   <v-admin-panel v-bind:app-info="appInfo">
     <v-panel title="Dashboard">
-        <v-record-form v-on:submit="submit">
+        <v-record-form action="<%=$request.url%>" method="GET" v-on:submit="submit">
           <% layout.sections.forEach(function(section) { %>
              <v-div-row>
           <% section.columns.forEach(function(column) { %>

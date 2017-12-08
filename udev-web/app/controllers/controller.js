@@ -10,7 +10,7 @@ const Controller = JClass._extend({
   setResponseContentType(response) {
     response.set('Content-Type', this.contentType);
   },
-  respond(actionPromise,response) {
+  respond(actionPromise,request,response) {
     actionPromise.then((responseBody) => this.sendResponse(response,responseBody));
   },
   sendResponse(response,responseBody) {

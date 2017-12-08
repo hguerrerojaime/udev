@@ -2,20 +2,13 @@
   "id": "hr",
   "name": "HR Management",
   "menuItems": [
-    { "icon": "fa fa-male", "href":"/hr?do=employee&a=edit", "label": "Employees" },
-    { "icon": "fa fa-users", "href":"/hr?do=position&a=edit", "label": "Positions" }
-  ]
-}, {
-  "id": "sales",
-  "name": "Sales",
-  "menuItems": [
-    { "icon": "fa fa-flash", "href":"/sales?do=sale&a=edit", "label": "Point of Sale" }
+    { "icon": "fa fa-male", "href":"/hr?do=16719ced-6e08-4339-b560-98ae6785263c&a=list", "label": "Employees" },
+    { "icon": "fa fa-users", "href":"/hr?do=2a078c1e-64ba-461f-bdbf-58393420e8cc&a=edit", "label": "Positions" }
   ]
 }, {
   "id": "inv",
   "name": "Inventory",
   "menuItems": [
-    { "icon": "fa fa-archive", "href":"/products", "label": "Products" },
-    { "icon": "fa fa-copyright", "href":"/brands", "label": "Brands" }
+    { "icon": "fa fa-archive", "href":"/inv?do=88647d45-3561-4329-88ae-4a2483b1fde1&a=edit", "label": "Products" }
   ]
 }]

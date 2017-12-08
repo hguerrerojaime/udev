@@ -13,7 +13,8 @@ const JsController = TemplateController._extend({
     return ".ejs.js";
   },
   processResponseBody(responseBody) {
-    return uglify.minify(responseBody).code;
+    return responseBody;
+    //return uglify.minify(responseBody).code;
   }
 });
 

@@ -2,6 +2,7 @@
   <head>
     <meta charset="utf-8">
     <title>Vue Js</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
     <link rel="stylesheet" type="text/css" href="/static/skin.min.css">
     <link rel="stylesheet" type="text/css" href="/static/ap.css">
     <link rel="stylesheet" type="text/css" href="/static/daterangepicker.css">
@@ -22,7 +23,7 @@
     </script>
 
     <script src="udev-vue.js" type="text/javascript"></script>
-    <script src="/scripts/application/<%=action%>.js?src=<%= application.id %><%if(domainObject) {%>&do=<%=domainObject%><%}%>"
+    <script src="/scripts/application/<%=action%>.js?src=<%= application.id %><%if(domainObject) {%>&do=<%=domainObject%><%}%><%if(recId) {%>&id=<%=recId%><%}%>"
       type="text/javascript"></script>
 
   </body>

@@ -166,3 +166,8 @@ i.menu-icon {
     .divider, .clear {
         clear: both;
     }
+
+
+    .table thead th.actions-column {
+      width: 15%;
+    }

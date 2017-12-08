@@ -15,6 +15,11 @@ Vue.component('v-input-text', {
     prop: 'vModel',
     event: 'input'
   },
+  watch: {
+    vModel: function(val) {
+      this.updateValue(val);
+    }
+  },
   data: function() {
     return {
       textCaseConfig: {

@@ -7,8 +7,7 @@ Vue.component('v-button', {
       default: "default"
     },
     label: {
-      type: String,
-      required: true
+      type: String
     },
     icon: {
       type: String
@@ -22,7 +21,10 @@ Vue.component('v-button', {
     <button
       type="button"
       v-on:click="onClick"
-      v-bind:class="'btn btn-'+brand+' btn-'+size"><i v-bind:class="icon" v-if="icon"></i> {{label}}</button>
+      v-bind:class="'btn btn-'+brand+' btn-'+size">
+      <i v-bind:class="icon" v-if="icon"></i>
+      <span v-if="label">{{label}}</span>
+    </button>
   `,
   methods: {
     onClick: function() {
