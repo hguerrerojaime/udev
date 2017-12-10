@@ -11,8 +11,12 @@ const RequestProcessor = JClass._extend({
       $response: res
     });
 
-    controller.setResponseContentType(res);
-    controller.respond(actionPromise,req,res);
+    if (!res.headersSent) {
+      controller.setResponseContentType(res);
+      controller.respond(actionPromise,req,res);
+    }
+
+
   }
 });
 

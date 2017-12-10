@@ -33,8 +33,9 @@ Vue.component('v-datatable', {
   },
   mounted: function() {
     this.loadColumns();
-    console.log(this.$el);
-    // $(this.$el).DataTable({});
+    setTimeout(() => $(this.$el).DataTable({}),0);
+
+
   },
   template: `
     <table class="table table-condensed table-striped" style="font-size:12px;">
