@@ -1,4 +1,4 @@
-const Controller = require("./controller");
+const Controller = require("udev-mvc").controllers.Controller;
 
 const ejs = require('ejs');
 
