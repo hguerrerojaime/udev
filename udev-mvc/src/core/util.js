@@ -21,8 +21,6 @@ exports.parameterfy = (function() {
               $instance = instance;
             }
 
-            console.log(typeof named_params === 'object');
-
             if (typeof named_params === 'object') {
                 var params = [].slice.call(arguments, 0, -1);
 

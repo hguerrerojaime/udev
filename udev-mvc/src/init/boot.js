@@ -22,19 +22,19 @@ function createMvcModule(dependencies,DI = require('node-di')) {
 }
 
 function boot(args = {}) {
-  let express = args.express;
-  let dependencies = args.dependencies;
-  let routes = args.routes;
-  let DI = args.DI;
+  let options = Object.assign({},{
+    configure: function(app) {}
+  },args);
 
-  let mvcModule = createMvcModule(dependencies,DI);
-  let app = express();
-  configureRouter(app,mvcModule,routes);
+  let mvcModule = createMvcModule(options.dependencies,options.DI);
+  let app = options.express();
+  options.configure(app);
+  configureRouter(app,mvcModule,options.routes);
 
   return {
     app: app,
-    dependencies: dependencies,
-    routes: routes,
+    dependencies: options.dependencies,
+    routes: options.routes,
     mvcModule: mvcModule
   };
 }
