@@ -15,13 +15,12 @@ const WL_OPTS = {
      database: 'udev_data'
    }
  },
- defaults: {
-  primaryKey: 'id',
-  datastore: 'default',
-  attributes: {
-    id: { type: 'string', columnName: '_id' },
-  },
-  models: {}
+ defaultModelSettings: {
+   primaryKey: 'id',
+   datastore: 'default',
+   attributes: {
+     id: { type: 'string', columnName: '_id' }
+   }
  }
 };
 
@@ -34,39 +33,29 @@ const DataSourceFactory = JClass._extend({
     },options);
 
     let wlOptions = Object.assign({},WL_OPTS,{
-
-    });
-
-    let waterLine = new WaterLine();
-
-    console.log(Waterline.Model.extend({
-      datastore: 'default',
-      identity: 'post',
-      attributes: {
-        title: { type: 'string', required: true }
-      }
-    }));
-
-    waterLine.initialize(wlOptions,function(err,orm) {
-      if (err) {
-        console.error(err);
-      } else {
-
-        console.log(orm);
-
-        let dataSource = {
-          waterline: orm,
-          model: function(modelName) {
-            return WaterLine.getModel(modelName,orm);
+      models: {
+        post: {
+          attributes: {
+            title: { type: 'string', required: true }
           }
-        };
-
-        opts.callback(dataSource);
-        waterLine.teardown();
-
+        }
       }
     });
 
+    return new Promise(function(fullfill,reject) {
+      WaterLine.start(wlOptions,function(err,orm) {
+        if (err) {
+          reject(err);
+        } else {
+          fullfill({
+            waterline: orm,
+            model: function(modelName) {
+              return orm.collections[modelName];
+            }
+          });
+        }
+      });
+    });
   }
 
 });

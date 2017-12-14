@@ -24,10 +24,15 @@ function bootMvc(udevMvc,dependencies,routes) {
 }
 
 function boot() {
+  let DataSourceFactory = require('../core/DataSourceFactory');
 
-  let dependencies = require('./dependencies');
-  bootMvc(require('udev-mvc'), dependencies, require('../config/routes'));
+  let dataSourceFactory = new DataSourceFactory();
 
+  dataSourceFactory.createDataSource().then((dataSource) => {
+    let dependencies = require('./dependencies');
+    dependencies.values.dataSource = dataSource;
+    bootMvc(require('udev-mvc'), dependencies, require('../config/routes'));
+  });
 }
 
 boot();

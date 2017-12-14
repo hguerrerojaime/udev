@@ -2,27 +2,15 @@ const JClass = require('jclass');
 
 const RecordWriter = JClass._extend({
 
-  init(dataSourceFactory) {
-    this.dataSourceFactory = dataSourceFactory;
+  init(dataSource) {
+    this.dataSource = dataSource;
   },
 
-  create(model,data = {}) {
-
-    return new Promise((fullfill,reject) => {
-
-      this.dataSourceFactory.createDataSource({
-        callback: (dataSource) => {
-          dataSource.model(model).create(data).meta({fetch:true}).then((record) => {
-            fullfill(record);
-          });
-        }
-      });
-
-    });
-
+  async create(model,data = {}) {
+    return await this.dataSource.model(model).create(data).meta({fetch:true});
   }
 });
 
-RecordWriter.$inject = ['dataSourceFactory'];
+RecordWriter.$inject = ['dataSource'];
 
 module.exports = RecordWriter;
