@@ -4,15 +4,20 @@
   "description": "",
   "main": "udev-api-data.js",
   "scripts": {
-    "start": "node udev-api-data"
+    "start": "node_modules/.bin/nodemon --exec \"node udev-api-data\" --watch src"
   },
   "author": "Humberto Guerrero <hguerrerojaime@gmail.com> (https://github.com/hguerrerojaime)",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "jclass": "^1.2.1",
     "node-di": "0.0.3",
     "sails-mongo": "1.0.0-11",
+    "udev-mvc": "file:../udev-mvc",
     "waterline": "^0.13.1-9"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.7"
   }
 }

@@ -5,9 +5,8 @@ const RecordWriteController = RestController._extend({
     this.recordWriter = recordWriter;
   },
   async create($request) {
-    console.log(this.recordWriter.create);
     let record = await this.recordWriter.create('post',$request.body);
-    console.log(record);
+
     return record;
   },
   async update($request) {

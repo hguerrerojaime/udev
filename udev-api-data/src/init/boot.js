@@ -14,26 +14,19 @@ function bootMvc(udevMvc,dependencies,routes) {
     express: express,
     dependencies: dependencies,
     routes: routes,
-    DI: require('node-di')
+    DI: require('node-di'),
+    configure: function(app) {
+      app.use(require('body-parser').json());
+    }
   });
 
   startServer(udev.app);
 }
 
-function boot(datasourceFactory = require('./datasource-factory')) {
+function boot() {
 
-  datasourceFactory.createDatasource()
-    .then((datasource) => {
-
-      let dependencies = require('./dependencies');
-      dependencies.values.datasource = datasource;
-      bootMvc(require('udev-mvc'), dependencies, require('../config/routes'));
-    })
-    .catch((err) => {
-      console.error(err);
-      return process.exit(1);
-    })
-  ;
+  let dependencies = require('./dependencies');
+  bootMvc(require('udev-mvc'), dependencies, require('../config/routes'));
 
 }
 

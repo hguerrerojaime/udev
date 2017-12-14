@@ -7,6 +7,7 @@ module.exports = {
     recordWriteController: require('../controllers/RecordWriteController')
   },
   services: {
-    recordWriter: require('../services/RecordWriter')
+    recordWriter: require('../services/RecordWriter'),
+    dataSourceFactory: require('../core/DataSourceFactory')
   }
 };
