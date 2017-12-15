@@ -12,10 +12,10 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "jclass": "^1.2.1",
+    "mongoose": "^4.13.7",
     "node-di": "0.0.3",
-    "sails-mongo": "1.0.0-11",
-    "udev-mvc": "file:../udev-mvc",
-    "waterline": "^0.13.1-9"
+    "superagent": "^3.8.2",
+    "udev-mvc": "file:../udev-mvc"
   },
   "devDependencies": {
     "nodemon": "^1.12.7"

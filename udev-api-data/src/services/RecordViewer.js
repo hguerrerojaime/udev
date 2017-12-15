@@ -1,7 +1,7 @@
 const JClass = require('jclass');
 const Repository = require('../core/Repository');
 
-const RecordWriter = JClass._extend({
+const RecordViewer = JClass._extend({
 
   init(modelManagerFactory,realmApi) {
     this.modelManagerFactory = modelManagerFactory;
@@ -18,15 +18,18 @@ const RecordWriter = JClass._extend({
     return new Repository(modelManager);
   },
 
-  async create(options) {
+  async get(options) {
     let repository = await this.createRepository();
     let Model = repository.get(options.model);
-    let modelInstance = new Model(options.data);
-    modelInstance.save();
-    return modelInstance;
+    return await new Promise((fullfill,reject) => {
+      Model.findById(options.id, function(err, instance) {
+        if (err) reject(err);
+        fullfill(instance);
+      });
+    });
   }
 });
 
-RecordWriter.$inject = ['modelManagerFactory','realmApi'];
+RecordViewer.$inject = ['modelManagerFactory','realmApi'];
 
-module.exports = RecordWriter;
+module.exports = RecordViewer;

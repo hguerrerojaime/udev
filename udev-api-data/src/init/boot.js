@@ -23,16 +23,20 @@ function bootMvc(udevMvc,dependencies,routes) {
   startServer(udev.app);
 }
 
+function configMongoose(mongoose = require('mongoose')) {
+
+  console.log(mongoose.Schema.method);
+
+  // mongoose.Schema.set('toJSON', {
+  //     virtuals: true
+  // });
+}
+
 function boot() {
-  let DataSourceFactory = require('../core/DataSourceFactory');
 
-  let dataSourceFactory = new DataSourceFactory();
+  configMongoose();
 
-  dataSourceFactory.createDataSource().then((dataSource) => {
-    let dependencies = require('./dependencies');
-    dependencies.values.dataSource = dataSource;
-    bootMvc(require('udev-mvc'), dependencies, require('../config/routes'));
-  });
+  bootMvc(require('udev-mvc'), require('./dependencies'), require('../config/routes'));
 }
 
 boot();
