@@ -13,6 +13,7 @@
     "express": "^4.16.2",
     "jclass": "^1.2.1",
     "mongoose": "^4.13.7",
+    "mongoose-timestamp": "^0.6.0",
     "node-di": "0.0.3",
     "superagent": "^3.8.2",
     "udev-mvc": "file:../udev-mvc"

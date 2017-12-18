@@ -5,13 +5,17 @@ module.exports = {
   controllers: {
     indexController: require('../controllers/IndexController'),
     recordWriteController: require('../controllers/RecordWriteController'),
-    recordViewController: require('../controllers/RecordViewController')
+    recordReadController: require('../controllers/RecordReadController'),
+    viewController: require('../controllers/ViewController')
   },
   services: {
     recordWriter: require('../services/RecordWriter'),
-    recordViewer: require('../services/RecordViewer'),
+    recordReader: require('../services/RecordReader'),
     dataSourceFactory: require('../core/DataSourceFactory'),
     modelManagerFactory: require('../core/ModelManagerFactory'),
-    realmApi: require('../services/RealmApi')
+    repositoryFactory: require('../core/RepositoryFactory'),
+    realmApi: require('../services/RealmApi'),
+    modelService: require('../services/ModelService'),
+    viewService: require('../services/ViewService')
   }
 };

@@ -1,11 +1,22 @@
 module.exports = {
   '/': { get: { controller: "index", action: "index" } },
-  '/rec': {
-    post: { controller: "recordWrite", action: "create" }
+  '/rec/:modelId': {
+    post: { controller: "recordWrite", action: "create" },
+    get: { controller: "recordRead", action: "list" }
   },
-  '/rec/:id': {
+  '/rec/:modelId/:id': {
     put: { controller: "recordWrite", action: "update" },
     delete: { controller: "recordWrite", action: "delete" },
-    get: { controller: "recordView", action: "show" }
+    get: { controller: "recordRead", action: "show" }
+  },
+  '/v/:modelId': {
+    post: { controller: "view", action: "create" },
+    get: { controller: "view", action: "list" }
+  },
+
+  '/v/:modelId/:id': {
+    put: { controller: "view", action: "update" },
+    delete: { controller: "view", action: "delete" },
+    get: { controller: "view", action: "show" }
   }
 };

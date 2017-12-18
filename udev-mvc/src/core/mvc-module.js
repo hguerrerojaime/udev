@@ -33,7 +33,7 @@ function injectServices(mvcModule, services= {}) {
 }
 
 function injectRequestProcessor(mvcModule) {
-  mvcModule.service('requestProcessor',require('./request-processor'));
+  mvcModule.service('requestProcessor',require('./RequestProcessor'));
 }
 
 function injectDependencies(mvcModule,dependencies = {}) {

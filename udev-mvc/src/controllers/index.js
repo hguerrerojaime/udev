@@ -1,1 +1,1 @@
-exports.Controller = require('./controller');
+exports.Controller = require('./Controller');

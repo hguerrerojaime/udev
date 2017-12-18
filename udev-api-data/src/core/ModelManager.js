@@ -1,4 +1,5 @@
 const JClass = require('jclass');
+const timestamps = require('mongoose-timestamp');
 
 const ModelManager = JClass._extend({
   init(dataSource) {
@@ -18,11 +19,10 @@ const ModelManager = JClass._extend({
 
     let Schema = this.dataSource.mongoose.Schema;
 
-    let schema = new Schema(
-      meta.attributes,Object.assign({},meta.options,{
-      })
-    );
-
+    let metaAttributes = Object.assign({},meta.attributes,{});
+    let metaOptions = Object.assign({},meta.options,{});
+    let schema = new Schema(metaAttributes,metaOptions);
+    schema.plugin(timestamps);
     schema.method('toJSON', function() {
       var obj = this.toObject();
       //Rename fields
@@ -32,14 +32,9 @@ const ModelManager = JClass._extend({
       return obj;
     });
 
-    console.log(schema.method);
-    // schema.set('toJSON', {
-    //   virtuals: true,
-    //   versionKey:false,
-    //   transform: function (doc, ret) {   delete ret._id  }
-    // });
-
-    this.models[modelName] = this.dataSource.connection.model(modelName,schema);
+    let Model = this.dataSource.connection.model(modelName,schema);
+    this.models[modelName] = Model;
+    return Model;
   },
 
   getModel(modelName) {
