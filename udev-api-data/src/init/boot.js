@@ -24,14 +24,7 @@ function bootMvc(udevMvc,dependencies,routes) {
 }
 
 function configMongoose(mongoose = require('mongoose')) {
-
   mongoose.Promise = Promise;
-
-  console.log(mongoose.Schema.method);
-
-  // mongoose.Schema.set('toJSON', {
-  //     virtuals: true
-  // });
 }
 
 function boot() {

@@ -2,14 +2,6 @@ const Vue = require('vue').default;
 
 Vue.component('v-side-bar', {
   props: {
-    menuItems: {
-      type: Array,
-      default: []
-    },
-    applicationItems: {
-      type: Array,
-      default: []
-    },
     defaultAppCode: {
       type: String,
       default: ""
@@ -40,19 +32,7 @@ Vue.component('v-side-bar', {
     </div>
     <div class="divider"></div>
     <div class="profile-sidebar" style="padding: 0;">
-      <form class="form" v-bind:action="'/'+selectedApplication"">
-        <div class="form-group">
-          <label>Application Navigator</label>
-          <div class="input-group">
-            <select class="form-control" v-model="selectedApplication">
-              <option v-for="item in applicationItems" :value="item.id">{{ item.name }}</option>
-            </select>
-            <span class="input-group-btn">
-              <v-submit-button label="Go" brand="primary"></v-submit-button>
-            </span>
-          </div>
-        </div>
-      </form>
+      <slot name="navigator"></slot>
     </div>
     <div class="divider"></div>
     <form role="search">
@@ -61,9 +41,7 @@ Vue.component('v-side-bar', {
       </div>
     </form>
     <ul class="nav menu">
-      <li v-for="menuItem in filteredItems"><a v-bind:href="menuItem.href">
-        <em v-bind:class="menuItem.icon" style="width: 15px; height: 15px; text-align: center;">&nbsp;</em> {{ menuItem.label }}</a>
-      </li>
+      <slot name="menu-items"></slot>
     </ul>
   </div>
   `

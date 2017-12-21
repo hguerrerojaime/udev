@@ -1,0 +1,28 @@
+{
+  "name": "udev-web-builder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node_modules/.bin/webpack-dev-server --colors --hot",
+    "build": "node_modules/.bin/webpack",
+    "watch": "node_modules/.bin/webpack --progress --colors --watch",
+    "build-skin": "node_modules/.bin/build-skin --c=skin.config.json"
+  },
+  "author": "Humberto Guerrero <hguerrerojaime@gmail.com> (https://github.com/hguerrerojaime)",
+  "license": "ISC",
+  "devDependencies": {
+    "build-skin": "^1.0.8",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "font-awesome": "^4.7.0",
+    "less": "^2.7.3",
+    "url-loader": "^0.6.2",
+    "file-loader": "^1.1.5"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "udev-vue": "file:../udev-vue",
+    "vue-router": "^3.0.1"
+  }
+}

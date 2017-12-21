@@ -10,7 +10,6 @@ const RecordWriter = JClass._extend({
 
   async create(options = {}) {
     let Model = await this.modelService.getModel(options);
-    console.log(Model);
     let modelInstance = new Model(options.data);
     return await modelUtils.promisefy(modelInstance,modelInstance.save);
   }
