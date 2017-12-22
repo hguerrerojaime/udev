@@ -13,6 +13,8 @@ var app = new Vue({
   <v-admin-panel>
     <v-panel title="Dashboard">
 
+      <v-button brand="primary" icon="fa fa-save" label="Save"></v-button>
+
     </v-panel>
   </v-admin-panel>
   `

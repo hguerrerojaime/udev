@@ -1,0 +1,43 @@
+.alert .alert-link {
+    color: @white;
+}
+
+// Base class
+.panel {
+  position: relative;
+  margin-bottom: 20px;
+  background-color: @panel-bg;
+  border-radius: @panel-border-radius;
+
+  &.panel-transparent {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  // Top Border Panel Style
+  &.panel-border {
+      border-style: solid;
+      border-width: 0;
+      &.top    { border-top-width: 5px; }
+      &.right  { border-right-width: 5px; }
+      &.bottom { border-bottom-width: 5px; }
+      &.left   { border-left-width: 5px; }
+      > .panel-heading {
+          background-color: @panel-heading-bg;
+          border-color: @panel-border-color;
+          border-top: 1px solid transparent;
+          > .panel-title {
+            color: @panel-heading-font-color;
+          }
+      }
+  }
+  &.panel-border.panel-default {
+      border-color: #DDD;
+      > .panel-heading {
+          border-top: 1px solid transparent;
+      }
+  }
+
+}

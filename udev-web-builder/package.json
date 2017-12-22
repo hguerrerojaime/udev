@@ -13,12 +13,12 @@
   "license": "ISC",
   "devDependencies": {
     "build-skin": "^1.0.8",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7",
+    "file-loader": "^1.1.5",
     "font-awesome": "^4.7.0",
     "less": "^2.7.3",
     "url-loader": "^0.6.2",
-    "file-loader": "^1.1.5"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
