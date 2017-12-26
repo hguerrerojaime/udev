@@ -12,8 +12,11 @@ Vue.component('v-panel', {
   },
   template: `
     <div v-bind:class="'panel panel-'+brand">
-      <div class="panel-heading" v-if="title">
+      <div class="panel-heading clearfix" v-if="title">
         {{ title }}
+        <div class="pull-right" v-if="hasPanelMenu">
+          <slot name="panel-menu"></slot>
+        </div>
       </div>
       <div class="panel-body">
         <slot></slot>
@@ -26,6 +29,9 @@ Vue.component('v-panel', {
   computed: {
     hasFooter() {
       return this.$slots.footer;
+    },
+    hasPanelMenu() {
+      return this.$slots['panel-menu'];
     }
   }
 });

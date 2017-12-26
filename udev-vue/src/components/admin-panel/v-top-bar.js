@@ -15,7 +15,7 @@ Vue.component('v-top-bar', {
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span></button>
-        <a class="navbar-brand" href="#" style="text-transform:none;">{{ title }} - uDev</a>
+        <a class="navbar-brand" href="#" style="text-transform:none;">{{ title }}</a>
 
       </div>
     </div><!-- /.container-fluid -->
