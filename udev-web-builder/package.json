@@ -23,6 +23,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "udev-vue": "file:../udev-vue",
+    "vue-breadcrumbs": "^1.1.2",
     "vue-router": "^3.0.1"
   }
 }

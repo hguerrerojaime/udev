@@ -26,14 +26,16 @@ function registerConfig(Vue,vueConfig,config) {
 
 const vueConfig = require('vue-config');
 const injector = require('vue-inject');
-const dependencies = require('./dependencies');
+const baseDependencies = require('./dependencies');
 const config = require('./config');
 const Vue = require('vue').default;
 
-module.exports = function boot() {
+module.exports = function boot(dependencies = {}) {
 
-  injectDependencies(dependencies,injector);
-  registerInjector(Vue,injector,dependencies);
+  let deps = Object.assign({},baseDependencies,dependencies);
+
+  injectDependencies(deps,injector);
+  registerInjector(Vue,injector,deps);
   registerConfig(Vue,vueConfig,config);
   registerLookAndFeel();
   registerComponents();

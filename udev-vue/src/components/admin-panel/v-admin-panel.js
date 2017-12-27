@@ -17,6 +17,9 @@ Vue.component('v-admin-panel', {
         <template slot="menu-items"><slot name="menu-items"></slot></template>
       </v-side-bar>
       <v-body>
+        <template slot="breadcrumbs">
+          <slot name="breadcrumbs"></slot>
+        </template>
         <slot></slot>
       </v-body>
     </div>

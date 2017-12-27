@@ -1,7 +1,7 @@
 module.exports = {
   template: `
   <v-panel>
-    <h4>Application Builder Index</h4>
+    <h4>Application Builder Home</h4>
 
     <v-div-row>
       <v-div-col :width="6">
@@ -9,6 +9,7 @@ module.exports = {
         </v-panel>
       </v-div-col>
     </v-div-row>
+
   </v-panel>
   `
 };
