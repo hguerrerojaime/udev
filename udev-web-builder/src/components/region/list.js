@@ -6,7 +6,7 @@ module.exports = {
     }
   },
   mounted: function() {
-    this.items = this.$superagent.get("http://demo7914904.mockable.io/regions")
+    this.items = this.$superagent.get("https://us-central1-udev-373c6.cloudfunctions.net/api/realm/qheQJrr6QDyGXLKx2apO/region")
       .then((response) => {
         return response.body;
       });

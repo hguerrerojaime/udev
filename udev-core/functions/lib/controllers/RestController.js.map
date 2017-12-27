@@ -1,0 +1,1 @@
+{"version":3,"file":"RestController.js","sourceRoot":"","sources":["../../src/controllers/RestController.ts"],"names":[],"mappings":";;AAAA,6CAAsC;AAEtC,oBAAoC,SAAQ,oBAAU;IACpD,IAAI,WAAW;QACb,MAAM,CAAC,kBAAkB,CAAC;IAC5B,CAAC;IACD,YAAY,CAAC,QAAQ,EAAC,YAAY;QAChC,QAAQ,CAAC,IAAI,CAAC,IAAI,CAAC,mBAAmB,CAAC,YAAY,CAAC,CAAC,CAAC;IACxD,CAAC;CACF;AAPD,iCAOC"}

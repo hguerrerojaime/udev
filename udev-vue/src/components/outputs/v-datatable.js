@@ -108,7 +108,7 @@ Vue.component('v-datatable', {
   },
   template: `
     <div>
-      <table ref="table" class="table table-condensed table-striped" style="font-size:12px;">
+      <table ref="table" class="table table-condensed table-striped" style="font-size:13px;">
         <thead>
           <tr>
             <slot name="head"></slot>
