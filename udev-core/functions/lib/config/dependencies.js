@@ -6,11 +6,14 @@ module.exports = {
     controllers: {
         indexController: require('../controllers/IndexController').default,
         realmController: require('../controllers/RealmController').default,
-        regionController: require('../controllers/RegionController').default
+        regionController: require('../controllers/RegionController').default,
+        modelController: require('../controllers/ModelController').default
     },
     services: {
         realmService: require('../services/RealmService').default,
-        regionService: require('../services/RegionService').default
+        regionService: require('../services/RegionService').default,
+        modelService: require('../services/ModelService').default,
+        pathResolver: require('../dao/PathResolver').default
     }
 };
 //# sourceMappingURL=dependencies.js.map

@@ -4,35 +4,30 @@ import { injectable, inject } from "inversify";
 export default class RegionService {
 
   public constructor(
-    @inject("realmService") private realmService
+    @inject("realmService") private realmService,
+    @inject("pathResolver") private pathResolver
   ) { }
 
-  async create(realmId,command) {
+  async create(command) {
 
-    if (this.realmService.exists(realmId)) {
-      const realmRef = await this.realmService.ref(realmId);
-      const ref = realmRef.collection('region').add({
+    if (this.realmService.exists(command.realmId)) {
+      const regionCollectionRef = this.pathResolver.lookup(`realm["${command.realmId}"].region`);
+      const ref = await regionCollectionRef.add({
         name: command.name,
         description: command.description,
         release: false,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        createdBy: command.userId,
+        updatedBy: command.userId
       });
-      return await this.get(realmId,ref.id);
+      return ref.id;
     }
 
   }
 
-  ref(realmId,id) {
-    return this.collectionRef(realmId).doc(id);
-  }
-
-  collectionRef(realmId) {
-    return this.realmService.ref(realmId).collection('region');
-  }
-
   async list(realmId) {
-    const regionList =  await this.collectionRef(realmId).get();
+    const regionList =  await this.pathResolver.lookup(`realm["${realmId}"].region`).get();
 
     const result = [];
 
@@ -43,8 +38,15 @@ export default class RegionService {
     return result;
   }
 
+  async exists(realmId,id) {
+    const ref = this.pathResolver.lookup(`realm["${realmId}"].region["${id}"]`);
+    const doc = await ref.get();
+
+    return doc.exists;
+  }
+
   async get(realmId,id) {
-    const ref = this.ref(realmId,id);
+    const ref = this.pathResolver.lookup(`realm["${realmId}"].region["${id}"]`);
     const doc = await ref.get();
 
     if (doc.exists) {

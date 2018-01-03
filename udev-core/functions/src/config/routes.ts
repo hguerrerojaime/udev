@@ -13,4 +13,7 @@ module.exports = {
   '/realm/:realmId/region/:regionId': {
     get: { controller: "region", action: "show" }
   }
+  // '/realm/:realmId/region/:regionId/model': {
+  //   post: { controller: "model", action: "create" }
+  // }
 };

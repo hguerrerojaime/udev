@@ -13,12 +13,12 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-    "express": "^4.16.2",
     "firebase-admin": "~5.4.2",
     "firebase-functions": "^0.7.1",
     "inversify": "^4.9.0",
     "reflect-metadata": "^0.1.10",
-    "udev-mvc": "^1.0.0"
+    "udev-model-ts": "^1.0.1",
+    "udev-mvc-ts": "^1.0.4"
   },
   "devDependencies": {
     "nodemon": "^1.14.3",

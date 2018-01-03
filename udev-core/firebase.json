@@ -15,6 +15,10 @@
     ],
     "rewrites": [
       {
+        "source": "/developer/**",
+        "destination": "/hola.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

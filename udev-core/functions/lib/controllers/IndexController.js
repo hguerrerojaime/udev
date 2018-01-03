@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const RestController_1 = require("./RestController");
-class IndexController extends RestController_1.default {
+const udev_mvc_ts_1 = require("udev-mvc-ts");
+class IndexController extends udev_mvc_ts_1.RestController {
     about() {
         return __awaiter(this, void 0, void 0, function* () {
             return {

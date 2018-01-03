@@ -20,15 +20,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const RestController_1 = require("./RestController");
+const udev_mvc_ts_1 = require("udev-mvc-ts");
 const inversify_1 = require("inversify");
-let RealmController = class RealmController extends RestController_1.default {
+const RealmCreateCommand_1 = require("../commands/RealmCreateCommand");
+let RealmController = class RealmController extends udev_mvc_ts_1.RestController {
     constructor(realmService) {
         super();
         this.realmService = realmService;
     }
     register($request) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(RealmCreateCommand_1.RealmCreateCommand.prototype);
             return yield this.realmService.register($request.body);
         });
     }

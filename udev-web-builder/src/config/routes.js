@@ -1,9 +1,7 @@
 module.exports =  [
   {
     path: '/',
-    component: {
-      template: '<router-view />'
-    },
+    component: require('../components/index'),
     redirect: '/home',
     children: [
       {

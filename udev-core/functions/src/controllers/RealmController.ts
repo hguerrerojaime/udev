@@ -1,6 +1,7 @@
-import RestController from './RestController';
-
+import { RestController } from 'udev-mvc-ts';
 import { inject } from "inversify";
+
+import { RealmCreateCommand } from '../commands/RealmCreateCommand';
 
 export default class RealmController extends RestController {
 
@@ -11,6 +12,7 @@ export default class RealmController extends RestController {
   }
 
   async register($request) {
+    console.log(RealmCreateCommand.prototype);
     return await this.realmService.register($request.body);
   }
 

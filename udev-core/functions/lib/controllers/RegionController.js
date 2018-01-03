@@ -20,16 +20,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const RestController_1 = require("./RestController");
+const udev_mvc_ts_1 = require("udev-mvc-ts");
 const inversify_1 = require("inversify");
-let RegionController = class RegionController extends RestController_1.default {
+let RegionController = class RegionController extends udev_mvc_ts_1.RestController {
     constructor(regionService) {
         super();
         this.regionService = regionService;
     }
     create($request, realmId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.regionService.create(realmId, $request.body);
+            return yield this.regionService.create($request.body.merge({ realmId: realmId }));
         });
     }
     list(realmId) {

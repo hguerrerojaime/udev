@@ -1,4 +1,4 @@
-import RestController from './RestController';
+import { RestController } from 'udev-mvc-ts';
 
 export default class IndexController extends RestController {
 

@@ -22,39 +22,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 let RealmService = class RealmService {
-    constructor(db) {
-        this.db = db;
+    constructor(pathResolver) {
+        this.pathResolver = pathResolver;
     }
     register(command) {
         return __awaiter(this, void 0, void 0, function* () {
-            const ref = yield this.db.collection('realm').add({
+            const ref = yield this.pathResolver.lookup('realm').add({
                 name: command.name,
                 description: command.description,
                 createdAt: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date(),
+                createdBy: command.userId,
+                updatedBy: command.userId
             });
             yield ref.collection('region').add({
                 name: "development",
                 description: "Development Sandbox",
                 release: false,
                 createdAt: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date(),
+                createdBy: command.userId,
+                updatedBy: command.userId
             });
-            return yield this.get(ref.id);
+            return ref.id;
         });
-    }
-    ref(id) {
-        return this.db.collection('realm').doc(id);
     }
     exists(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const doc = yield this.ref(id).get();
+            const doc = yield this.pathResolver.lookup(`realm["${id}"]`).get();
             return doc.exists;
         });
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const doc = yield this.ref(id).get();
+            const doc = yield this.pathResolver.lookup(`realm["${id}"]`).get();
             if (doc.exists) {
                 return Object.assign({}, doc.data(), { id: id });
             }
@@ -63,7 +64,7 @@ let RealmService = class RealmService {
 };
 RealmService = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject("db")),
+    __param(0, inversify_1.inject("pathResolver")),
     __metadata("design:paramtypes", [Object])
 ], RealmService);
 exports.default = RealmService;

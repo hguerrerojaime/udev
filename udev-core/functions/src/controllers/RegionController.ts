@@ -1,6 +1,6 @@
-import RestController from './RestController';
-
+import { RestController } from 'udev-mvc-ts';
 import { inject } from "inversify";
+import { RegionCreateCommand } from '../commands/RegionCreateCommand';
 
 export default class RegionController extends RestController {
 
@@ -11,7 +11,7 @@ export default class RegionController extends RestController {
   }
 
   async create($request, realmId) {
-    return await this.regionService.create(realmId,$request.body);
+    return await this.regionService.create($request.body.merge({ realmId: realmId }));
   }
 
   async list(realmId) {
