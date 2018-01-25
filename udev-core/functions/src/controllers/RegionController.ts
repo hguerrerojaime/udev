@@ -11,7 +11,7 @@ export default class RegionController extends RestController {
   }
 
   async create($request, realmId) {
-    return await this.regionService.create($request.body.merge({ realmId: realmId }));
+    return await this.regionService.create(Object.assign({},$request.body,{ realmId: realmId }));
   }
 
   async list(realmId) {

@@ -4,30 +4,30 @@ import { injectable, inject } from "inversify";
 export default class RegionService {
 
   public constructor(
-    @inject("realmService") private realmService,
-    @inject("pathResolver") private pathResolver
+    @inject("regionDAOFactory") private regionDAOFactory
   ) { }
 
   async create(command) {
 
-    if (this.realmService.exists(command.realmId)) {
-      const regionCollectionRef = this.pathResolver.lookup(`realm["${command.realmId}"].region`);
-      const ref = await regionCollectionRef.add({
-        name: command.name,
-        description: command.description,
-        release: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        createdBy: command.userId,
-        updatedBy: command.userId
-      });
-      return ref.id;
-    }
+    const regionDAO = this.regionDAOFactory(command.realmId);
+
+    const ref = await regionDAO.collection().add({
+      name: command.name,
+      description: command.description,
+      release: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: command.userId,
+      updatedBy: command.userId
+    });
+
+    return ref.id;
 
   }
 
   async list(realmId) {
-    const regionList =  await this.pathResolver.lookup(`realm["${realmId}"].region`).get();
+    const regionDAO = this.regionDAOFactory(realmId);
+    const regionList =  await regionDAO.collection().get();
 
     const result = [];
 
@@ -39,14 +39,16 @@ export default class RegionService {
   }
 
   async exists(realmId,id) {
-    const ref = this.pathResolver.lookup(`realm["${realmId}"].region["${id}"]`);
+    const regionDAO = this.regionDAOFactory(realmId);
+    const ref = regionDAO.find(id);
     const doc = await ref.get();
 
     return doc.exists;
   }
 
   async get(realmId,id) {
-    const ref = this.pathResolver.lookup(`realm["${realmId}"].region["${id}"]`);
+    const regionDAO = this.regionDAOFactory(realmId);
+    const ref = regionDAO.find(id);
     const doc = await ref.get();
 
     if (doc.exists) {

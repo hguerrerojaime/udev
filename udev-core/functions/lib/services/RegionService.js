@@ -22,30 +22,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 let RegionService = class RegionService {
-    constructor(realmService, pathResolver) {
-        this.realmService = realmService;
-        this.pathResolver = pathResolver;
+    constructor(regionDAOFactory) {
+        this.regionDAOFactory = regionDAOFactory;
     }
     create(command) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.realmService.exists(command.realmId)) {
-                const regionCollectionRef = this.pathResolver.lookup(`realm["${command.realmId}"].region`);
-                const ref = yield regionCollectionRef.add({
-                    name: command.name,
-                    description: command.description,
-                    release: false,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                    createdBy: command.userId,
-                    updatedBy: command.userId
-                });
-                return ref.id;
-            }
+            const regionDAO = this.regionDAOFactory(command.realmId);
+            const ref = yield regionDAO.collection().add({
+                name: command.name,
+                description: command.description,
+                release: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                createdBy: command.userId,
+                updatedBy: command.userId
+            });
+            return ref.id;
         });
     }
     list(realmId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const regionList = yield this.pathResolver.lookup(`realm["${realmId}"].region`).get();
+            const regionDAO = this.regionDAOFactory(realmId);
+            const regionList = yield regionDAO.collection().get();
             const result = [];
             regionList.forEach((doc) => {
                 result.push(Object.assign({}, doc.data(), { id: doc.id }));
@@ -55,14 +53,16 @@ let RegionService = class RegionService {
     }
     exists(realmId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const ref = this.pathResolver.lookup(`realm["${realmId}"].region["${id}"]`);
+            const regionDAO = this.regionDAOFactory(realmId);
+            const ref = regionDAO.find(id);
             const doc = yield ref.get();
             return doc.exists;
         });
     }
     get(realmId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const ref = this.pathResolver.lookup(`realm["${realmId}"].region["${id}"]`);
+            const regionDAO = this.regionDAOFactory(realmId);
+            const ref = regionDAO.find(id);
             const doc = yield ref.get();
             if (doc.exists) {
                 return Object.assign({}, doc.data(), { id: id });
@@ -72,9 +72,8 @@ let RegionService = class RegionService {
 };
 RegionService = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject("realmService")),
-    __param(1, inversify_1.inject("pathResolver")),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(0, inversify_1.inject("regionDAOFactory")),
+    __metadata("design:paramtypes", [Object])
 ], RegionService);
 exports.default = RegionService;
 //# sourceMappingURL=RegionService.js.map

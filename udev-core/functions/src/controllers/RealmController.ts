@@ -12,8 +12,8 @@ export default class RealmController extends RestController {
   }
 
   async register($request) {
-    console.log(RealmCreateCommand.prototype);
-    return await this.realmService.register($request.body);
+    const command = $request.body;
+    return await this.realmService.register(Object.assign({},command,{ currentAccount: $request.user.uid }));
   }
 
   async show(realmId) {

@@ -21,51 +21,64 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
+const AccessLevel_1 = require("../core/AccessLevel");
 let RealmService = class RealmService {
-    constructor(pathResolver) {
-        this.pathResolver = pathResolver;
+    constructor(realmDAO, userService, userRealmDAO, regionDAOFactory) {
+        this.realmDAO = realmDAO;
+        this.userService = userService;
+        this.userRealmDAO = userRealmDAO;
+        this.regionDAOFactory = regionDAOFactory;
     }
     register(command) {
         return __awaiter(this, void 0, void 0, function* () {
-            const ref = yield this.pathResolver.lookup('realm').add({
+            const ref = yield this.realmDAO.addRealm({
+                currentAccount: command.currentAccount,
                 name: command.name,
-                description: command.description,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: command.userId,
-                updatedBy: command.userId
+                description: command.description
             });
-            yield ref.collection('region').add({
+            yield this.assignUserToNewRealm(ref.id, command.currentAccount);
+            const regionDAO = this.regionDAOFactory(ref.id);
+            yield regionDAO.addRegion({
                 name: "development",
                 description: "Development Sandbox",
-                release: false,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: command.userId,
-                updatedBy: command.userId
+                currentAccount: command.currentAccount
             });
             return ref.id;
         });
     }
+    assignUserToNewRealm(realmId, currentAccount) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userService.getUserByAccountId(currentAccount);
+            return yield this.userRealmDAO.addUserToRealm({
+                currentAccount: currentAccount,
+                userId: user.id,
+                realmId: realmId,
+                accessLevel: AccessLevel_1.AccessLevel.OWNER
+            });
+        });
+    }
     exists(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const doc = yield this.pathResolver.lookup(`realm["${id}"]`).get();
+            const doc = yield this.realmDAO.find(id);
             return doc.exists;
         });
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const doc = yield this.pathResolver.lookup(`realm["${id}"]`).get();
+            const doc = yield this.realmDAO.find(id);
             if (doc.exists) {
-                return Object.assign({}, doc.data(), { id: id });
+                return doc.data();
             }
         });
     }
 };
 RealmService = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject("pathResolver")),
-    __metadata("design:paramtypes", [Object])
+    __param(0, inversify_1.inject("realmDAO")),
+    __param(1, inversify_1.inject("userService")),
+    __param(2, inversify_1.inject("userRealmDAO")),
+    __param(3, inversify_1.inject("regionDAOFactory")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], RealmService);
 exports.default = RealmService;
 //# sourceMappingURL=RealmService.js.map

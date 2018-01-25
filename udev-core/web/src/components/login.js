@@ -18,6 +18,7 @@ module.exports = {
     },
     forward() {
       if (firebase.auth().currentUser) {
+        console.log(firebase.auth().currentUser);
         this.$router.push('/home');
       }
     }

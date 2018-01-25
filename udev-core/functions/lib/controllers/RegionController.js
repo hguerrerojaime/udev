@@ -29,7 +29,7 @@ let RegionController = class RegionController extends udev_mvc_ts_1.RestControll
     }
     create($request, realmId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.regionService.create($request.body.merge({ realmId: realmId }));
+            return yield this.regionService.create(Object.assign({}, $request.body, { realmId: realmId }));
         });
     }
     list(realmId) {
