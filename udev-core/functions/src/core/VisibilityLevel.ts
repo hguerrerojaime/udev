@@ -1,8 +1,8 @@
 export enum VisibilityLevel {
   //visible for owner and invited users
-  PRIVATE = "private",
+  PRIVATE = 1,
   //visible for all realm users
-  PROTECTED = "protected",
+  PROTECTED = 2,
   //visible for all users
-  PUBLIC = "public"
+  PUBLIC = 3
 }

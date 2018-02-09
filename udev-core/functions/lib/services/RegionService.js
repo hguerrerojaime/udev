@@ -21,51 +21,108 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
+const ResourceNotFoundError_1 = require("../errors/ResourceNotFoundError");
+const AccessLevel_1 = require("../core/AccessLevel");
 let RegionService = class RegionService {
-    constructor(regionDAOFactory) {
+    constructor(regionDAOFactory, userRegionDAOFactory, realmService, userService) {
         this.regionDAOFactory = regionDAOFactory;
+        this.userRegionDAOFactory = userRegionDAOFactory;
+        this.realmService = realmService;
+        this.userService = userService;
     }
-    create(command) {
+    create(realmId, command) {
         return __awaiter(this, void 0, void 0, function* () {
-            const regionDAO = this.regionDAOFactory(command.realmId);
-            const ref = yield regionDAO.collection().add({
+            const regionDAO = this.regionDAOFactory(realmId);
+            const ref = yield regionDAO.addRegion({
+                currentAccount: command.currentAccount,
                 name: command.name,
                 description: command.description,
-                release: false,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: command.userId,
-                updatedBy: command.userId
+                access: command.access
             });
             return ref.id;
         });
     }
-    list(realmId) {
+    findAllVisibleRegions(realmId, accountId) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.verifyRealmAccessByAccount(realmId, accountId);
             const regionDAO = this.regionDAOFactory(realmId);
-            const regionList = yield regionDAO.collection().get();
-            const result = [];
-            regionList.forEach((doc) => {
-                result.push(Object.assign({}, doc.data(), { id: doc.id }));
-            });
-            return result;
+            const visibleRegions = yield regionDAO.findAllVisibleRegions().get();
+            return visibleRegions.docs;
         });
     }
-    exists(realmId, id) {
+    findAllUserRegionsByAccountId(realmId, accountId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const regionDAO = this.regionDAOFactory(realmId);
-            const ref = regionDAO.find(id);
-            const doc = yield ref.get();
-            return doc.exists;
+            const user = yield this.userService.getUserByAccountId(accountId);
+            return this.findAllUserRegions(realmId, user.id);
         });
     }
-    get(realmId, id) {
+    findAllRegionsByAccountId(realmId, accountId) {
         return __awaiter(this, void 0, void 0, function* () {
+            return [].concat(yield this.findAllVisibleRegions(realmId, accountId), yield this.findAllUserRegionsByAccountId(realmId, accountId));
+        });
+    }
+    get(realmId, accountId, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.verifyRealmAccessByAccount(realmId, accountId);
             const regionDAO = this.regionDAOFactory(realmId);
             const ref = regionDAO.find(id);
             const doc = yield ref.get();
             if (doc.exists) {
-                return Object.assign({}, doc.data(), { id: id });
+                return doc.data();
+            }
+        });
+    }
+    canReadRegion(realmId, regionId, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const regionDAO = this.regionDAOFactory(realmId);
+            const user = yield this.userService.getUserByAccountId(accountId);
+            return yield regionDAO.canDoWithRegion(regionId, user.id, AccessLevel_1.AccessLevel.READ);
+        });
+    }
+    canWriteRegion(realmId, regionId, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const regionDAO = this.regionDAOFactory(realmId);
+            const user = yield this.userService.getUserByAccountId(accountId);
+            return yield regionDAO.canDoWithRegion(regionId, user.id, AccessLevel_1.AccessLevel.WRITE);
+        });
+    }
+    canAdminRegion(realmId, regionId, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const regionDAO = this.regionDAOFactory(realmId);
+            const user = yield this.userService.getUserByAccountId(accountId);
+            return yield regionDAO.canDoWithRegion(regionId, user.id, AccessLevel_1.AccessLevel.ADMIN);
+        });
+    }
+    canOwnRegion(realmId, regionId, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const regionDAO = this.regionDAOFactory(realmId);
+            const user = yield this.userService.getUserByAccountId(accountId);
+            return yield regionDAO.canDoWithRegion(regionId, user.id, AccessLevel_1.AccessLevel.OWNER);
+        });
+    }
+    findAllUserRegions(realmId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.verifyRealmAccessByUser(realmId, userId);
+            const userRegionDAO = this.userRegionDAOFactory(realmId);
+            const regionDAO = this.regionDAOFactory(realmId);
+            const userRegionRef = userRegionDAO.findUserRegions(userId);
+            const userRegionIdList = yield userRegionRef.get();
+            const regionIds = userRegionIdList.docs.map((doc) => doc.data().regionId);
+            const userRegions = yield regionDAO.findMany(regionDAO.collection(), regionIds);
+            return userRegions;
+        });
+    }
+    verifyRealmAccessByAccount(realmId, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!(yield this.realmService.isRealmVisibleToAccount(realmId, accountId))) {
+                throw new ResourceNotFoundError_1.ResourceNotFoundError();
+            }
+        });
+    }
+    verifyRealmAccessByUser(realmId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!(yield this.realmService.isRealmVisibleToUser(realmId, userId))) {
+                throw new ResourceNotFoundError_1.ResourceNotFoundError();
             }
         });
     }
@@ -73,7 +130,10 @@ let RegionService = class RegionService {
 RegionService = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject("regionDAOFactory")),
-    __metadata("design:paramtypes", [Object])
+    __param(1, inversify_1.inject("userRegionDAOFactory")),
+    __param(2, inversify_1.inject("realmService")),
+    __param(3, inversify_1.inject("userService")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], RegionService);
 exports.default = RegionService;
 //# sourceMappingURL=RegionService.js.map

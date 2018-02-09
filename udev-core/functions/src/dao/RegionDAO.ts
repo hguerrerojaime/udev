@@ -33,6 +33,27 @@ export default class RegionDAO extends DAO {
     });
   }
 
+  findAllVisibleRegions() {
+    return this.collection().where("access.visibility",">",VisibilityLevel.PRIVATE);
+  }
+
+  async canDoWithRegion(regionId,userId,accessLevel) {
+    const region = await this.find(regionId).get();
+    const regionData = region.data();
+    const regionAccessLevel:any = regionData.access.level;
+    const isNumber: boolean = typeof regionAccessLevel === "number";
+
+    if (isNumber) {
+      console.log(`${regionAccessLevel} >= ${accessLevel}`);
+
+      return regionAccessLevel >= accessLevel;
+    } else {
+      const userAccessLevel = regionAccessLevel[userId];
+      return userAccessLevel >= accessLevel;
+    }
+
+  }
+
   parentRef() {
     return this.realmDAO.find(this.realmId);
   }

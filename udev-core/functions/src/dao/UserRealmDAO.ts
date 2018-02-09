@@ -19,12 +19,16 @@ export default class UserRealmDAO extends DAO {
     });
   }
 
-  findUserRealms(userId) {
+  findAllUserRealms(userId) {
     return this.collection().where("userId","==",userId);
   }
 
-  findRealmUsers(realmId) {
+  findAllRealmUsers(realmId) {
     return this.collection().where("realmId","==",realmId);
+  }
+
+  findByRealmAndUser(realmId,userId) {
+    return this.collection().where("userId","==",userId).where("realmId","==",realmId).limit(1);
   }
 
 }

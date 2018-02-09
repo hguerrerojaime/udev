@@ -33,9 +33,16 @@ let RealmController = class RealmController extends udev_mvc_ts_1.RestController
             return yield this.realmService.register(Object.assign({}, command, { currentAccount: $request.user.uid }));
         });
     }
-    show(realmId) {
+    list($request) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.realmService.get(realmId);
+            const currentAccount = $request.user.uid;
+            return this.realmService.findAllVisibleRealmsByAccountId(currentAccount);
+        });
+    }
+    show(realmId, $request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const currentAccount = $request.user.uid;
+            return yield this.realmService.get(realmId, currentAccount);
         });
     }
 };

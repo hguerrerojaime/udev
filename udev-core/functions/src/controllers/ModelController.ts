@@ -1,6 +1,5 @@
 import { RestController } from 'udev-mvc-ts';
 import { inject } from "inversify";
-import { ModelCreateCommand } from '../commands/ModelCreateCommand';
 
 export default class ModelController extends RestController {
 
@@ -10,13 +9,11 @@ export default class ModelController extends RestController {
     super();
   }
 
-  async create(realmId,regionId,$request) {
-
-
-    return await this.modelService.create(
-      Object.assign({},$request.body,{ realmId: realmId, regionId: regionId })
+  async create($request,realmId,regionId) {
+    const command = $request.body;
+    return await this.modelService.create(realmId,regionId,
+      Object.assign({},command,{ currentAccount: $request.user.uid })
     );
-
   }
 
 }

@@ -32,14 +32,21 @@ let RegionController = class RegionController extends udev_mvc_ts_1.RestControll
             return yield this.regionService.create(Object.assign({}, $request.body, { realmId: realmId }));
         });
     }
-    list(realmId) {
+    list($request, realmId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.regionService.list(realmId);
+            const currentAccount = $request.user.uid;
+            const regionCollection = yield this.regionService.findAllRegionsByAccountId(realmId, currentAccount);
+            const result = {};
+            regionCollection.forEach(function (doc) {
+                result[doc.id] = doc.data();
+            });
+            return result;
         });
     }
-    show(realmId, regionId) {
+    show($request, realmId, regionId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.regionService.get(realmId, regionId);
+            const currentAccount = $request.user.uid;
+            return yield this.regionService.get(realmId, currentAccount, regionId);
         });
     }
 };

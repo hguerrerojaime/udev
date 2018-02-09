@@ -1,6 +1,6 @@
 export enum AccessLevel {
-  OWNER = "owner",
-  ADMIN = "admin",
-  WRITE = "write",
-  READ = "read"
+  OWNER = 4,
+  ADMIN = 3,
+  WRITE = 2,
+  READ = 1
 }

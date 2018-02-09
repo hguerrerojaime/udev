@@ -22,6 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
 const AccessLevel_1 = require("../core/AccessLevel");
+const ResourceNotFoundError_1 = require("../errors/ResourceNotFoundError");
 let RealmService = class RealmService {
     constructor(realmDAO, userService, userRealmDAO, regionDAOFactory) {
         this.realmDAO = realmDAO;
@@ -34,14 +35,15 @@ let RealmService = class RealmService {
             const ref = yield this.realmDAO.addRealm({
                 currentAccount: command.currentAccount,
                 name: command.name,
-                description: command.description
+                description: command.description,
+                private: command.private
             });
             yield this.assignUserToNewRealm(ref.id, command.currentAccount);
             const regionDAO = this.regionDAOFactory(ref.id);
             yield regionDAO.addRegion({
+                currentAccount: command.currentAccount,
                 name: "development",
-                description: "Development Sandbox",
-                currentAccount: command.currentAccount
+                description: "Development Sandbox"
             });
             return ref.id;
         });
@@ -57,17 +59,66 @@ let RealmService = class RealmService {
             });
         });
     }
-    exists(id) {
+    isRealmVisibleToUser(realmId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const doc = yield this.realmDAO.find(id);
-            return doc.exists;
+            const realm = yield this.realmDAO.find(realmId).get();
+            //console.log(realm.data());
+            if (realm.exists && !realm.data().private) {
+                return true;
+            }
+            const query = yield this.userRealmDAO.findByRealmAndUser(realmId, userId).get();
+            return query.size > 0;
         });
     }
-    get(id) {
+    isRealmVisibleToAccount(realmId, accountId) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userService.getUserByAccountId(accountId);
+            return this.isRealmVisibleToUser(realmId, user.id);
+        });
+    }
+    findAllPublicRealms() {
+        return this.realmDAO.findAllPublicRealms().get();
+    }
+    findAllUserRealms(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userRealmRef = this.userRealmDAO.findAllUserRealms(id);
+            const userRealmIdList = yield userRealmRef.get();
+            const realmIds = userRealmIdList.docs.map((doc) => doc.data().realmId);
+            return this.realmDAO.findMany(this.realmDAO.collection(), realmIds);
+        });
+    }
+    findAllUserRealmsByAccountId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userService.getUserByAccountId(id);
+            return this.findAllUserRealms(user.id);
+        });
+    }
+    findAllRealmsByAccountId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userRealmCollection = yield this.findAllUserRealmsByAccountId(id);
+            const publicRealmCollection = yield this.findAllPublicRealms();
+            const result = {
+                user: {},
+                public: {}
+            };
+            userRealmCollection.forEach(function (doc) {
+                result.user[doc.id] = doc.data();
+            });
+            publicRealmCollection.forEach(function (doc) {
+                result.public[doc.id] = doc.data();
+            });
+            return result;
+        });
+    }
+    get(id, accountId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const isVisible = yield this.isRealmVisibleToAccount(id, accountId);
             const doc = yield this.realmDAO.find(id);
-            if (doc.exists) {
+            if (isVisible) {
                 return doc.data();
+            }
+            else {
+                throw new ResourceNotFoundError_1.ResourceNotFoundError();
             }
         });
     }

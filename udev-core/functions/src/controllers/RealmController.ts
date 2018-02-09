@@ -16,8 +16,15 @@ export default class RealmController extends RestController {
     return await this.realmService.register(Object.assign({},command,{ currentAccount: $request.user.uid }));
   }
 
-  async show(realmId) {
-    return await this.realmService.get(realmId);
+  async list($request) {
+    const currentAccount = $request.user.uid;
+    return this.realmService.findAllVisibleRealmsByAccountId(currentAccount);
+  }
+
+
+  async show(realmId,$request) {
+    const currentAccount = $request.user.uid;
+    return await this.realmService.get(realmId,currentAccount);
   }
 
 }

@@ -22,18 +22,4 @@ export default class UserController extends RestController {
       email: $request.user.email
     });
   }
-
-  async myRealms($request) {
-    const currentAccount = $request.user.uid;
-    const realmCollection = await this.userService.findUserRealmsByAccountId(currentAccount);
-    const result = {};
-
-    realmCollection.forEach(function(doc) {
-      result[doc.id] = doc.data();
-    });
-
-    return result;
-  }
-
-
 }

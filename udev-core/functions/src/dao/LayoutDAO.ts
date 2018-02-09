@@ -1,9 +1,17 @@
 import DAO from './DAO';
 
 import { FieldType } from '../core/FieldType';
-import systemModels from '../core/systemModels';
 
-export default class ModelDAO extends DAO {
+export default class LayoutDAO extends DAO {
+
+  private static RECORD_INFO_SECTION:any = {
+    title: "Record Information",
+    visible: "READ",
+    columns: [
+      ['createdAt','updatedAt'],
+      ['createdBy','updatedBy']
+    ]
+  };
 
   private regionDAO;
 
@@ -23,15 +31,38 @@ export default class ModelDAO extends DAO {
   }
 
   collection() {
-    return this.parentRef().collection("model");
-  }
-
-  fieldCollection(modelId) {
-    return this.find(modelId).collection("field");
+    return this.parentRef().collection("layout");
   }
 
   parentRef() {
     return this.regionDAO.find(this.regionId);
+  }
+
+  findByName(name) {
+    return this.collection().where("name","==",name).limit(1);
+  }
+
+  addLayout(command) {
+    return this.add(this.collection(),command.currentAccount,{
+      name: command.name,
+      modelName: command.modelName,
+      visible: "ALL",
+      sections: [
+        {
+          title: "Record Data",
+          columns: [
+            [ 'key' ],['BLANK']
+          ]
+        },
+        LayoutDAO.RECORD_INFO_SECTION
+      ]
+    });
+  }
+
+  updateLayout(id,command) {
+    return this.set(this.find(id),command.currentAccount,{
+      sections: [].concat(command.sections,[LayoutDAO.RECORD_INFO_SECTION])
+    },true);
   }
 
   addModel(command,custom = true) {
@@ -41,17 +72,6 @@ export default class ModelDAO extends DAO {
       pluralLabel: command.pluralLabel,
       description: command.description
     });
-  }
-
-  createSystemModels() {
-    const batch = this.db.batch();
-
-    systemModels.forEach((systemModel) => {
-
-
-
-    });
-
   }
 
   addField(modelId,command,custom = true) {

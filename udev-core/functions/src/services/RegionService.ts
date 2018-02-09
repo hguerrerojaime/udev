@@ -1,58 +1,109 @@
 import { injectable, inject } from "inversify";
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError';
+import { AccessLevel } from '../core/AccessLevel';
 
 @injectable()
 export default class RegionService {
 
   public constructor(
-    @inject("regionDAOFactory") private regionDAOFactory
+    @inject("regionDAOFactory") private regionDAOFactory,
+    @inject("userRegionDAOFactory") private userRegionDAOFactory,
+    @inject("realmService") private realmService,
+    @inject("userService") private userService
   ) { }
 
-  async create(command) {
+  async create(realmId,command) {
 
-    const regionDAO = this.regionDAOFactory(command.realmId);
+    const regionDAO = this.regionDAOFactory(realmId);
 
-    const ref = await regionDAO.collection().add({
+    const ref = await regionDAO.addRegion({
+      currentAccount: command.currentAccount,
       name: command.name,
       description: command.description,
-      release: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: command.userId,
-      updatedBy: command.userId
+      access: command.access
     });
 
     return ref.id;
 
   }
 
-  async list(realmId) {
+  async findAllVisibleRegions(realmId,accountId) {
+    await this.verifyRealmAccessByAccount(realmId,accountId);
+
     const regionDAO = this.regionDAOFactory(realmId);
-    const regionList =  await regionDAO.collection().get();
-
-    const result = [];
-
-    regionList.forEach((doc) => {
-      result.push(Object.assign({},doc.data(),{ id: doc.id }));
-    });
-
-    return result;
+    const visibleRegions = await regionDAO.findAllVisibleRegions().get();
+    return visibleRegions.docs;
   }
 
-  async exists(realmId,id) {
-    const regionDAO = this.regionDAOFactory(realmId);
-    const ref = regionDAO.find(id);
-    const doc = await ref.get();
-
-    return doc.exists;
+  async findAllUserRegionsByAccountId(realmId,accountId) {
+    const user = await this.userService.getUserByAccountId(accountId);
+    return this.findAllUserRegions(realmId,user.id);
   }
 
-  async get(realmId,id) {
+  async findAllRegionsByAccountId(realmId,accountId) {
+    return [].concat(
+      await this.findAllVisibleRegions(realmId,accountId),
+      await this.findAllUserRegionsByAccountId(realmId,accountId)
+    );
+  }
+
+  async get(realmId,accountId,id) {
+    await this.verifyRealmAccessByAccount(realmId,accountId);
+
     const regionDAO = this.regionDAOFactory(realmId);
     const ref = regionDAO.find(id);
     const doc = await ref.get();
 
     if (doc.exists) {
-      return Object.assign({},doc.data(), { id: id });
+      return doc.data();
+    }
+  }
+
+  async canReadRegion(realmId,regionId,accountId) {
+    const regionDAO = this.regionDAOFactory(realmId);
+    const user = await this.userService.getUserByAccountId(accountId);
+    return await regionDAO.canDoWithRegion(regionId,user.id,AccessLevel.READ);
+  }
+
+  async canWriteRegion(realmId,regionId,accountId) {
+    const regionDAO = this.regionDAOFactory(realmId);
+    const user = await this.userService.getUserByAccountId(accountId);
+    return await regionDAO.canDoWithRegion(regionId,user.id,AccessLevel.WRITE);
+  }
+
+  async canAdminRegion(realmId,regionId,accountId) {
+    const regionDAO = this.regionDAOFactory(realmId);
+    const user = await this.userService.getUserByAccountId(accountId);
+    return await regionDAO.canDoWithRegion(regionId,user.id,AccessLevel.ADMIN);
+  }
+
+  async canOwnRegion(realmId,regionId,accountId) {
+    const regionDAO = this.regionDAOFactory(realmId);
+    const user = await this.userService.getUserByAccountId(accountId);
+    return await regionDAO.canDoWithRegion(regionId,user.id,AccessLevel.OWNER);
+  }
+
+  private async findAllUserRegions(realmId,userId) {
+    await this.verifyRealmAccessByUser(realmId,userId);
+
+    const userRegionDAO = this.userRegionDAOFactory(realmId);
+    const regionDAO = this.regionDAOFactory(realmId);
+    const userRegionRef = userRegionDAO.findUserRegions(userId);
+    const userRegionIdList = await userRegionRef.get();
+    const regionIds = userRegionIdList.docs.map((doc) => doc.data().regionId );
+    const userRegions = await regionDAO.findMany(regionDAO.collection(),regionIds);
+    return userRegions;
+  }
+
+  private async verifyRealmAccessByAccount(realmId,accountId) {
+    if (!await this.realmService.isRealmVisibleToAccount(realmId,accountId)) {
+      throw new ResourceNotFoundError();
+    }
+  }
+
+  private async verifyRealmAccessByUser(realmId,userId) {
+    if (!await this.realmService.isRealmVisibleToUser(realmId,userId)) {
+      throw new ResourceNotFoundError();
     }
   }
 

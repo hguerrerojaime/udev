@@ -13,11 +13,11 @@ module.exports = {
   '/realm/:realmId/region/:regionId': {
     get: { controller: "region", action: "show" }
   },
+  '/realm/:realmId/region/:regionId/model': {
+    post: { controller: "model", action: "create" }
+  },
   '/user/me': {
     get: { controller: "user", action: "me" }
-  },
-  '/user/me/realms': {
-    get: { controller: "user", action: "myRealms" }
   },
   '/user': {
     post: { controller: "user", action: "register" }

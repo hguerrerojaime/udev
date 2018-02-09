@@ -4,7 +4,7 @@ import { injectable, inject } from "inversify";
 export default class DAO {
 
   public constructor(
-    @inject("db") private db,
+    @inject("db") protected db,
     @inject("recordAuditor") protected recordAuditor
   ) { }
 
@@ -14,14 +14,23 @@ export default class DAO {
 
   set(document,currentAccount,data = {},update = false) {
     if (update) {
-      return document.set(this.recordAuditor.update(currentAccount,data));
+      return document.set(this.recordAuditor.update(currentAccount,data),{ merge: true });
     } else {
       return document.set(this.recordAuditor.insert(currentAccount,data));
     }
   }
 
-  async findAllIn(collection,ids = []) {
+  async findMany(collection,ids = []) {
+    let result = [];
 
+    for (const id of ids) {
+      const doc = await collection.doc(id).get();
+      if (doc.exists) {
+        result.push(doc);
+      }
+    }
+
+    return result;
   }
 
   async findOne(collection) {
