@@ -22,7 +22,7 @@ export default class RegionDAO extends DAO {
     return this.parentRef().collection("region");
   }
 
-  addRegion(command) {
+  addRegion(command,transaction = null) {
     return this.add(this.collection(),command.currentAccount,{
       name: command.name,
       description: command.description,
@@ -30,7 +30,7 @@ export default class RegionDAO extends DAO {
         visibility: VisibilityLevel.PROTECTED,
         level: AccessLevel.WRITE
       },command.access)
-    });
+    },transaction);
   }
 
   findAllVisibleRegions() {

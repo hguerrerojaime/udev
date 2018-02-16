@@ -24,31 +24,35 @@ const inversify_1 = require("inversify");
 const AccessLevel_1 = require("../core/AccessLevel");
 const ResourceNotFoundError_1 = require("../errors/ResourceNotFoundError");
 let RealmService = class RealmService {
-    constructor(realmDAO, userService, userRealmDAO, regionDAOFactory) {
+    constructor(db, realmDAO, userService, userRealmDAO, regionDAOFactory) {
+        this.db = db;
         this.realmDAO = realmDAO;
         this.userService = userService;
         this.userRealmDAO = userRealmDAO;
         this.regionDAOFactory = regionDAOFactory;
     }
     register(command) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const ref = yield this.realmDAO.addRealm({
-                currentAccount: command.currentAccount,
-                name: command.name,
-                description: command.description,
-                private: command.private
+        const $this = this;
+        return this.db.runTransaction(function (transaction) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const ref = yield $this.realmDAO.addRealm({
+                    currentAccount: command.currentAccount,
+                    name: command.name,
+                    description: command.description,
+                    private: command.private
+                }, transaction);
+                yield $this.assignUserToNewRealm(ref.id, command.currentAccount, transaction);
+                const regionDAO = $this.regionDAOFactory(ref.id);
+                yield regionDAO.addRegion({
+                    currentAccount: command.currentAccount,
+                    name: "development",
+                    description: "Development Sandbox"
+                }, transaction);
+                return ref.id;
             });
-            yield this.assignUserToNewRealm(ref.id, command.currentAccount);
-            const regionDAO = this.regionDAOFactory(ref.id);
-            yield regionDAO.addRegion({
-                currentAccount: command.currentAccount,
-                name: "development",
-                description: "Development Sandbox"
-            });
-            return ref.id;
         });
     }
-    assignUserToNewRealm(realmId, currentAccount) {
+    assignUserToNewRealm(realmId, currentAccount, transaction = null) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userService.getUserByAccountId(currentAccount);
             return yield this.userRealmDAO.addUserToRealm({
@@ -56,7 +60,7 @@ let RealmService = class RealmService {
                 userId: user.id,
                 realmId: realmId,
                 accessLevel: AccessLevel_1.AccessLevel.OWNER
-            });
+            }, transaction);
         });
     }
     isRealmVisibleToUser(realmId, userId) {
@@ -125,11 +129,12 @@ let RealmService = class RealmService {
 };
 RealmService = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject("realmDAO")),
-    __param(1, inversify_1.inject("userService")),
-    __param(2, inversify_1.inject("userRealmDAO")),
-    __param(3, inversify_1.inject("regionDAOFactory")),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
+    __param(0, inversify_1.inject("db")),
+    __param(1, inversify_1.inject("realmDAO")),
+    __param(2, inversify_1.inject("userService")),
+    __param(3, inversify_1.inject("userRealmDAO")),
+    __param(4, inversify_1.inject("regionDAOFactory")),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], RealmService);
 exports.default = RealmService;
 //# sourceMappingURL=RealmService.js.map

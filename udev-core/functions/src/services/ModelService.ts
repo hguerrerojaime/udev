@@ -37,6 +37,7 @@ export default class ModelService {
   ];
 
   public constructor(
+    @inject("db") private db,
     @inject("modelDAOFactory") private modelDAOFactory,
     @inject("regionService") private regionService
   ) { }
@@ -57,7 +58,9 @@ export default class ModelService {
       description: command.description
     });
 
-    await modelDAO.addField(
+    await this.addField(
+      realmId,
+      regionId,
       ref.id,
       {
         currentAccount: command.currentAccount,
@@ -84,6 +87,24 @@ export default class ModelService {
     }
 
     return ref.id;
+  }
+
+  addField(realmId,regionId,modelId,command,custom = false,transaction = null) {
+    const modelDAO = this.modelDAOFactory(realmId,regionId);
+
+    return modelDAO.addField(
+        modelId,
+        {
+          currentAccount: command.currentAccount,
+          name: command.name,
+          label: command.label,
+          type: command.type,
+          options: command.options
+        },
+        custom,
+        transaction
+      );
+    }
   }
 
   async list(realmId,regionId,accountId) {

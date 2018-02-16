@@ -7,34 +7,43 @@ import { ResourceNotFoundError } from '../errors/ResourceNotFoundError';
 export default class RealmService {
 
   public constructor(
+    @inject("db") private db,
     @inject("realmDAO") private realmDAO,
     @inject("userService") private userService,
     @inject("userRealmDAO") private userRealmDAO,
-    @inject("regionDAOFactory") private regionDAOFactory
+    @inject("regionServiceFactory") private regionServiceFactory
   ) { }
 
-  async register(command) {
-    const ref = await this.realmDAO.addRealm({
-      currentAccount: command.currentAccount,
-      name: command.name,
-      description: command.description,
-      private: command.private
+  register(command) {
+
+    const $this = this;
+
+    const regionService = regionServiceFactory();
+
+    return this.db.runTransaction(async function(transaction) {
+
+      const ref = await $this.realmDAO.addRealm({
+        currentAccount: command.currentAccount,
+        name: command.name,
+        description: command.description,
+        private: command.private
+      },transaction);
+
+      await $this.assignUserToNewRealm(ref.id,command.currentAccount,transaction);
+      const regionDAO = $this.regionDAOFactory(ref.id);
+      await regionDAO.addRegion({
+        currentAccount: command.currentAccount,
+        name: "development",
+        description: "Development Sandbox"
+      },transaction);
+
+      return ref.id;
+
     });
 
-    await this.assignUserToNewRealm(ref.id,command.currentAccount);
-
-    const regionDAO = this.regionDAOFactory(ref.id);
-
-    await regionDAO.addRegion({
-      currentAccount: command.currentAccount,
-      name: "development",
-      description: "Development Sandbox"
-    });
-
-    return ref.id;
   }
 
-  private async assignUserToNewRealm(realmId,currentAccount) {
+  private async assignUserToNewRealm(realmId,currentAccount,transaction = null) {
 
     const user = await this.userService.getUserByAccountId(currentAccount);
 
@@ -43,7 +52,7 @@ export default class RealmService {
       userId: user.id,
       realmId: realmId,
       accessLevel: AccessLevel.OWNER
-    });
+    },transaction);
 
   }
 

@@ -11,12 +11,12 @@ export default class UserRealmDAO extends DAO {
     return this.parentRef().collection("userRealm");
   }
 
-  addUserToRealm(command) {
+  addUserToRealm(command,transaction = null) {
     return this.add(this.collection(),command.currentAccount,{
       userId: command.userId,
       realmId: command.realmId,
       accessLevel: command.accessLevel
-    });
+    },transaction);
   }
 
   findAllUserRealms(userId) {

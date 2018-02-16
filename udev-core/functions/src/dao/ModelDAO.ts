@@ -1,7 +1,6 @@
 import DAO from './DAO';
 
 import { FieldType } from '../core/FieldType';
-import systemModels from '../core/systemModels';
 
 export default class ModelDAO extends DAO {
 
@@ -34,35 +33,25 @@ export default class ModelDAO extends DAO {
     return this.regionDAO.find(this.regionId);
   }
 
-  addModel(command,custom = true) {
-    return this.add(this.collection(),command.currentAccount,{
-      name: custom ? `${command.name}__c` : command.name,
+  addModel(command,custom = true,transaction = null) {
+    const modelName = custom ? `${command.name}__c` : command.name;
+    return this.set(this.collection().doc(modelName),command.currentAccount,{
       label: command.label,
       pluralLabel: command.pluralLabel,
       description: command.description
     });
   }
 
-  createSystemModels() {
-    const batch = this.db.batch();
 
-    systemModels.forEach((systemModel) => {
-
-
-
-    });
-
-  }
-
-  addField(modelId,command,custom = true) {
+  addField(modelId,command,custom = true, transaction = null) {
     const defaultFieldOptions = FieldType.valueOf(command.type).defaultOptions;
+    const fieldName = custom ? `${command.name}__c` : command.name;
 
-    return this.add(this.fieldCollection(modelId),command.currentAccount,{
-      name: custom ? `${command.name}__c` : command.name,
+    return this.set(this.fieldCollection(modelId).doc(fieldName),command.currentAccount,{
       type: command.type,
       label: command.label,
       options: Object.assign({},defaultFieldOptions,command.options)
-    });
+    },false,transaction);
   }
 
 }

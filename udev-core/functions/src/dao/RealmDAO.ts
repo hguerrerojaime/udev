@@ -18,12 +18,12 @@ export default class RealmDAO extends DAO {
     return this.collection().where("private","==",false);
   }
 
-  addRealm(command) {
+  addRealm(command,transaction = null) {
     return this.add(this.collection(),command.currentAccount,Object.assign({},{
       name: command.name,
       description: command.description,
       private: command.private
-    },{ private: true }));
+    },{ private: true }),transaction);
   }
 
 }

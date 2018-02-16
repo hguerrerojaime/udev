@@ -22,6 +22,17 @@ module.exports = {
     recordAuditor: require('../core/RecordAuditor').default
   },
   factories: {
+    regionServiceFactory: (context) => {
+      const RegionService = require('../services/RegionService').default;
+      return () => {
+        return new RegionService(
+          context.container.get('regionDAOFactory'),
+          context.container.get('userRegionDAOFactory'),
+          context.container.get('realmService'),
+          context.container.get('userService')
+        );
+      };
+    },
     regionDAOFactory: (context) => {
       const RegionDAO = require('../dao/RegionDAO').default;
       return (realmId) => {

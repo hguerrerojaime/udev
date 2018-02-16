@@ -74,15 +74,6 @@ export default class LayoutDAO extends DAO {
     });
   }
 
-  addField(modelId,command,custom = true) {
-    const defaultFieldOptions = FieldType.valueOf(command.type).defaultOptions;
-
-    return this.add(this.fieldCollection(modelId),command.currentAccount,{
-      name: custom ? `${command.name}__c` : command.name,
-      type: command.type,
-      label: command.label,
-      options: Object.assign({},defaultFieldOptions,command.options)
-    });
-  }
+  
 
 }

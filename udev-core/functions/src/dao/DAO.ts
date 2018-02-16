@@ -8,16 +8,37 @@ export default class DAO {
     @inject("recordAuditor") protected recordAuditor
   ) { }
 
-  add(collection,currentAccount,data = {}) {
-    return collection.add(this.recordAuditor.insert(currentAccount,data));
+  add(collection,currentAccount,data = {}, transaction = null) {
+
+    if (transaction) {
+      return this.set(collection.doc(),currentAccount,data,false,transaction);
+    } else {
+      return collection.add(this.recordAuditor.insert(currentAccount,data));
+    }
+
   }
 
-  set(document,currentAccount,data = {},update = false) {
-    if (update) {
-      return document.set(this.recordAuditor.update(currentAccount,data),{ merge: true });
+  set(document,currentAccount,data = {},update = false,transaction = null) {
+
+    const fullData = update ?
+      this.recordAuditor.update(currentAccount,data) :
+      this.recordAuditor.insert(currentAccount,data)
+    ;
+
+    if (transaction) {
+      if (update) {
+        transaction.update(document,fullData);
+      } else {
+        transaction.set(document,fullData);
+      }
+      return document;
+
+    }  else if (update) {
+      return document.set(fullData,{ merge: true });
     } else {
-      return document.set(this.recordAuditor.insert(currentAccount,data));
+      return document.set(fullData);
     }
+
   }
 
   async findMany(collection,ids = []) {
